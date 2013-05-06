@@ -72,6 +72,7 @@ public class RequestService extends LocationService {
             @Override
             public void run() {
                 try {
+                	setDb();
                     mAuthToken = login();
                     applyChannel();
                     subscribeToChannel();
@@ -95,6 +96,16 @@ public class RequestService extends LocationService {
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
+	}
+	
+	private void setDb() throws TrackerException{
+		String token = login();
+		if (token != null){
+		    final JsonBaseRequest req = new JsonSetDbRequest(token, "tracker_base",  mSCache.serverUrl);
+	        final JsonSetDbResponse res = new JsonSetDbResponse();
+		    safeSendingRequest(req, res, R.string.msg_srv_login_failed, Errno.SUCCESS, Errno.DB_DOES_NOT_EXIST_ERROR);
+		    sendToLog(R.string.msg_srv_login_successful);
+		}
 	}
 	
     /**
@@ -198,7 +209,8 @@ public class RequestService extends LocationService {
     private final int ATTEMPTS = 3;
     private void safeSendingRequest(JsonBaseRequest request, 
         JsonBaseResponse response, int errorMsgId, int... possibleErrnos) 
-        throws TrackerException {
+        throws TrackerException 
+    {
         final String errorMsg = getResources().getString(errorMsgId);
         
         JSONObject JSONResponse = null;
