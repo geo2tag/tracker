@@ -42,6 +42,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import ru.spb.osll.tracker.preferences.Settings.ITrackerAppSettings;
 import ru.spb.osll.tracker.preferences.Settings.ITrackerNetSettings;
 import android.content.SharedPreferences.Editor;
+import android.util.Log;
 
 public class ConfigFeedParser extends DefaultHandler implements IXMLSettrings {
 	private Editor m_configEditor;
@@ -70,6 +71,9 @@ public class ConfigFeedParser extends DefaultHandler implements IXMLSettrings {
     		m_configEditor.putString(ITrackerNetSettings.CHANNEL, m_sb.toString());
     	} else if (localName.equals(server_url)){
     		m_configEditor.putString(ITrackerNetSettings.SERVER_URL, m_sb.toString());
+    	} else if (localName.equals(db_name)){
+    		Log.d("Tracker", "Reading db_name " + m_sb.toString());
+    		m_configEditor.putString(ITrackerNetSettings.DB_NAME, m_sb.toString());
     	} else if (localName.equals(time_tick)){
     		m_configEditor.putInt(ITrackerNetSettings.TIME_TICK, Integer.parseInt(m_sb.toString()));
     	} else if (localName.equals(show_tick)){
@@ -94,6 +98,7 @@ interface IXMLSettrings{
 	String password    = "password";
 	String channel     = "channel";
 	String server_url  = "server_url";
+	String db_name	   = "db_name";
 	String time_tick   = "time_tick";
 	String show_tick   = "show_tick";
 	String hide_app    = "hide_app";

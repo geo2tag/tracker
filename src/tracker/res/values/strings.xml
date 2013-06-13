@@ -45,7 +45,7 @@
    	<string name="time_request">Time between ticks</string>
 	<string name="radius">Radius</string>
 	<string name="uri">Uri</string>
-
+	<string name="db_name">Db Name</string>
 <!-- CheckBox -->
 	<string name="checkbox_hide_on_start">Hide tracker on start</string>
 	<string name="checkbox_show_tick_toast">Show tick toast</string>
@@ -59,6 +59,10 @@
 	<string name="btnHide">Hide</string>
 	
 <!-- messages -->
+	<string name="msg_srv_setdb_fail">SetDb failed</string>
+	<string name="msg_srv_setdb_success">SetDb success</string>
+	
+
 	<string name="msg_tracker_already_running">Tracker is already running...</string>
 	<string name="msg_tracker_start">Tracker is running...</string>
 	<string name="msg_tracker_stop">Tracker stopped...</string>

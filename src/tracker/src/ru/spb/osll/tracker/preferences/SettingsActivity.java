@@ -87,7 +87,7 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 		initField(PASSWORD, R.id.edit_password);
 		initField(CHANNEL, R.id.edit_channel);
 		initField(SERVER_URL, R.id.edit_server_address);
-		
+		initField(DB_NAME, R.id.edit_db_name);
 		initCheckBox(IS_HIDE_APP, R.id.checkbox_hide);
 		initCheckBox(IS_SHOW_TICKS, R.id.checkbox_tick);
 	}
@@ -112,6 +112,7 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 		saveField(PASSWORD, R.id.edit_password, prefEditor);
 		saveField(CHANNEL, R.id.edit_channel, prefEditor);
 		saveField(SERVER_URL, R.id.edit_server_address, prefEditor);
+		saveField(DB_NAME, R.id.edit_db_name, prefEditor);
 		prefEditor.putInt(TIME_TICK, m_timeTick);
 		
 		saveCheckBox(IS_HIDE_APP, R.id.checkbox_hide, prefEditor);

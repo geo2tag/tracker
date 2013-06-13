@@ -72,8 +72,9 @@ public class RequestService extends LocationService {
             @Override
             public void run() {
                 try {
-                	setDb();
+                	
                     mAuthToken = login();
+                    setDb();
                     applyChannel();
                     subscribeToChannel();
                     track();
@@ -99,12 +100,11 @@ public class RequestService extends LocationService {
 	}
 	
 	private void setDb() throws TrackerException{
-		String token = login();
-		if (token != null){
-		    final JsonBaseRequest req = new JsonSetDbRequest(token, "tracker_base",  mSCache.serverUrl);
+		if (mAuthToken != null){
+		    final JsonBaseRequest req = new JsonSetDbRequest(mAuthToken, mSCache.dbName,  mSCache.serverUrl);
 	        final JsonSetDbResponse res = new JsonSetDbResponse();
-		    safeSendingRequest(req, res, R.string.msg_srv_login_failed, Errno.SUCCESS, Errno.DB_DOES_NOT_EXIST_ERROR);
-		    sendToLog(R.string.msg_srv_login_successful);
+		    safeSendingRequest(req, res, R.string.msg_srv_setdb_fail, Errno.SUCCESS, Errno.DB_DOES_NOT_EXIST_ERROR);
+		    sendToLog(R.string.msg_srv_setdb_success);
 		}
 	}
 	
@@ -242,7 +242,8 @@ public class RequestService extends LocationService {
         public String login;
         public String pass;
         public String channel;
-        public String serverUrl;    
+        public String serverUrl;
+        public String dbName;
         public int trackInterval;
         public boolean isShowTick;
         
@@ -252,6 +253,7 @@ public class RequestService extends LocationService {
             pass = settings.getString(ITrackerNetSettings.PASSWORD, "");
             channel = settings.getString(ITrackerNetSettings.CHANNEL, "");
             serverUrl = settings.getString(ITrackerNetSettings.SERVER_URL, "");
+            dbName = settings.getString(ITrackerNetSettings.DB_NAME, "default");
             trackInterval = settings.getInt(ITrackerNetSettings.TIME_TICK, 30);
             isShowTick = settings.getBoolean(ITrackerAppSettings.IS_SHOW_TICKS, false);
         }       
@@ -259,7 +261,8 @@ public class RequestService extends LocationService {
         @Override
         public String toString() {
             return "SettingsCache [login=" + login + ", pass=" + pass
-                    + ", channel=" + channel + ", serverUrl=" + serverUrl
+                    + ", channel= " + channel + ", serverUrl=" + serverUrl
+                    + ", dbName = " +  dbName
                     + ", trackInterval=" + trackInterval + ", isShowTick="
                     + isShowTick + "]";
         }

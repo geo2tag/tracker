@@ -101,6 +101,7 @@ public class Settings {
 		String PASSWORD       = "password";
 		String CHANNEL        = "channel";
 	   	String SERVER_URL     = "server_url";
+	   	String DB_NAME		  = "db_name";
 	   	String TIME_TICK      = "time_request";
 		String RADIUS         = "radius";
 		String URI            = "uri";
