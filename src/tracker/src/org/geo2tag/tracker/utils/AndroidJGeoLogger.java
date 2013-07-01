@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011  Vasily Romanikhin  bac1ca89@gmail.com
+ * Copyright 2012  Vasily Romanikhin  vasily.romanikhin@gmail.com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,34 +33,60 @@
  * PROJ: OSLL/geo2tag
  * ---------------------------------------------------------------- */
 
-package ru.spb.osll.tracker.exception;
+package org.geo2tag.tracker.utils;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.lang.Thread.UncaughtExceptionHandler;
+import android.util.Log;
+import ru.spb.osll.log.Logger;
 
-import android.content.Context;
-import android.content.Intent;
-import android.os.Process;
+public class AndroidJGeoLogger implements Logger {
 
-public class ExceptionHandler implements UncaughtExceptionHandler {
-	private final Context m_context;
-
-	public ExceptionHandler(Context context) {
-		m_context = context;
+	@Override
+	public void println(int level, String tag, int v) {
+	    log(level, tag, v);
 	}
 
-	public void uncaughtException(Thread thread, Throwable exception) {
-		StringWriter stackTrace = new StringWriter();
-		exception.printStackTrace(new PrintWriter(stackTrace));
-		System.err.println(stackTrace);
+	@Override
+	public void println(int level, String tag, double v) {
+	    log(level, tag, v);
+	}
 
-		Intent intent = new Intent(m_context, ExceptionActivity.class);
-		intent.putExtra(ExceptionActivity.STACKTRACE, stackTrace.toString());
-		m_context.startActivity(intent);
 
-		Process.killProcess(Process.myPid());
-		System.exit(10);
+	@Override
+	public void println(int level, String tag, float v) {
+	    log(level, tag, v);
+	}
+
+
+	@Override
+	public void println(int level, String tag, byte v) {
+	    log(level, tag, v);
+	}
+
+
+	@Override
+	public void println(int level, String tag, boolean v) {
+	    log(level, tag, v);
+	}
+
+
+	@Override
+	public void println(int level, String tag, String v) {
+	    log(level, tag, v);
+	}
+
+
+	@Override
+	public void println(int level, String tag, Throwable t) {
+		t.printStackTrace();
+		Log.e(tag, "Throwable:", t);
 	}
 	
+	private void log(int level, String tag, Object msg){
+		if (level == Logger.DEBUG) {
+		    Log.d(tag, msg.toString());
+		} else {
+		    Log.e(tag, msg.toString());
+		}
+	}
+
 }

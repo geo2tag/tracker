@@ -33,15 +33,16 @@
  * PROJ: OSLL/geo2tag
  * ---------------------------------------------------------------- */
 
-package ru.spb.osll.tracker;
+package org.geo2tag.tracker;
 
-import ru.spb.osll.tracker.R; 
-import ru.spb.osll.tracker.exception.ExceptionHandler;
-import ru.spb.osll.tracker.preferences.Settings;
-import ru.spb.osll.tracker.preferences.SettingsActivity;
-import ru.spb.osll.tracker.preferences.Settings.ITrackerAppSettings;
-import ru.spb.osll.tracker.services.RequestService;
-import ru.spb.osll.tracker.utils.TrackerUtil;
+import org.geo2tag.tracker.exception.ExceptionHandler;
+import org.geo2tag.tracker.preferences.Settings;
+import org.geo2tag.tracker.preferences.SettingsActivity;
+import org.geo2tag.tracker.preferences.Settings.ITrackerAppSettings;
+import org.geo2tag.tracker.services.RequestService;
+import org.geo2tag.tracker.utils.TrackerUtil;
+
+import org.geo2tag.tracker.R; 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;

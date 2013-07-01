@@ -1,5 +1,5 @@
 /*
- * Copyright 2012  Vasily Romanikhin  vasily.romanikhin@gmail.com
+ * Copyright 2010-2011  Vasily Romanikhin  bac1ca89@gmail.com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,60 +33,37 @@
  * PROJ: OSLL/geo2tag
  * ---------------------------------------------------------------- */
 
-package ru.spb.osll.tracker.utils;
+package org.geo2tag.tracker.gui;
 
-import android.util.Log;
-import ru.spb.osll.log.Logger;
-
-public class AndroidJGeoLogger implements Logger {
-
-	@Override
-	public void println(int level, String tag, int v) {
-	    log(level, tag, v);
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+ 
+public class RadioButtonDialog{
+	protected Context myContext;
+	private String myTitle;
+	private String[] myItems;
+	private int mySelectedItem;
+	
+	public RadioButtonDialog(Context context, String title, String[] items, int selectedItem){
+		myContext = context;
+		myTitle = title;
+		myItems = items;
+		mySelectedItem = selectedItem;
 	}
 
-	@Override
-	public void println(int level, String tag, double v) {
-	    log(level, tag, v);
-	}
-
-
-	@Override
-	public void println(int level, String tag, float v) {
-	    log(level, tag, v);
-	}
-
-
-	@Override
-	public void println(int level, String tag, byte v) {
-	    log(level, tag, v);
-	}
-
-
-	@Override
-	public void println(int level, String tag, boolean v) {
-	    log(level, tag, v);
-	}
-
-
-	@Override
-	public void println(int level, String tag, String v) {
-	    log(level, tag, v);
-	}
-
-
-	@Override
-	public void println(int level, String tag, Throwable t) {
-		t.printStackTrace();
-		Log.e(tag, "Throwable:", t);
+	protected void itemSelected(DialogInterface dialog, int item){
+		dialog.dismiss();
 	}
 	
-	private void log(int level, String tag, Object msg){
-		if (level == Logger.DEBUG) {
-		    Log.d(tag, msg.toString());
-		} else {
-		    Log.e(tag, msg.toString());
-		}
+	public void show(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+		builder.setTitle(myTitle);
+		builder.setSingleChoiceItems(myItems, mySelectedItem, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int item) {
+		    	itemSelected(dialog, item);
+		    }
+		});
+		builder.create().show();
 	}
-
 }

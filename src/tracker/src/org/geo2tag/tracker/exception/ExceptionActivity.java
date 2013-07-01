@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2011  Vasily Romanikhin  bac1ca89@gmail.com
+ * Copyright 2010-2012  Vasily Romanikhin  bac1ca89@gmail.com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -33,37 +33,54 @@
  * PROJ: OSLL/geo2tag
  * ---------------------------------------------------------------- */
 
-package ru.spb.osll.tracker.gui;
+package org.geo2tag.tracker.exception;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
- 
-public class RadioButtonDialog{
-	protected Context myContext;
-	private String myTitle;
-	private String[] myItems;
-	private int mySelectedItem;
+import org.geo2tag.tracker.R;
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.view.View;
+import android.widget.TextView;
+
+public class ExceptionActivity extends Activity{
+	public static String STACKTRACE = "stacktrace";
 	
-	public RadioButtonDialog(Context context, String title, String[] items, int selectedItem){
-		myContext = context;
-		myTitle = title;
-		myItems = items;
-		mySelectedItem = selectedItem;
+	public void onCreate(Bundle icicle) {
+		super.onCreate(icicle);
+		setContentView(R.layout.exception_view);
+		final String stackTrace = getIntent().getStringExtra(STACKTRACE);
+		final TextView exeptionTextView = (TextView)findViewById(R.id.exeption_text);
+		
+		exeptionTextView.setMovementMethod(ScrollingMovementMethod.getInstance());
+		exeptionTextView.setClickable(false);
+		exeptionTextView.setLongClickable(false);
+
+		exeptionTextView.append("Tracker has been crached!");
+		exeptionTextView.append(stackTrace);
+		
+		findViewById(R.id.send).setOnClickListener(
+			new View.OnClickListener() {
+				public void onClick(View view) {
+					Intent sendIntent = new Intent(Intent.ACTION_SEND);
+					sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "geo2tag@lists.osll.spb.ru" });
+					sendIntent.putExtra(Intent.EXTRA_TEXT, stackTrace);
+					sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Tracker exception report");
+					sendIntent.setType("message/rfc822");
+					startActivity(sendIntent);
+					finish();
+				}
+			}
+		);
+
+		findViewById(R.id.cancel).setOnClickListener(
+			new View.OnClickListener() {
+				public void onClick(View view) {
+					finish();
+				}
+			}
+		);
 	}
 
-	protected void itemSelected(DialogInterface dialog, int item){
-		dialog.dismiss();
-	}
 	
-	public void show(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
-		builder.setTitle(myTitle);
-		builder.setSingleChoiceItems(myItems, mySelectedItem, new DialogInterface.OnClickListener() {
-		    public void onClick(DialogInterface dialog, int item) {
-		    	itemSelected(dialog, item);
-		    }
-		});
-		builder.create().show();
-	}
 }

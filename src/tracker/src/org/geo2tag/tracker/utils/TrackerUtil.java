@@ -33,7 +33,7 @@
  * PROJ: OSLL/geo2tag
  * ---------------------------------------------------------------- */
 
-package ru.spb.osll.tracker.utils;
+package org.geo2tag.tracker.utils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -43,8 +43,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import ru.spb.osll.tracker.R;
-import ru.spb.osll.tracker.TrackerActivity;
+import org.geo2tag.tracker.TrackerActivity;
+
+import org.geo2tag.tracker.R;
 import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;

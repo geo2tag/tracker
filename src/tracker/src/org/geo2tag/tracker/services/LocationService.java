@@ -30,12 +30,13 @@
  * PROJ: OSLL/geo2tag
  */
 
-package ru.spb.osll.tracker.services;
+package org.geo2tag.tracker.services;
 
 import java.util.List;
 
-import ru.spb.osll.tracker.TrackerActivity;
-import ru.spb.osll.tracker.exception.ExceptionHandler;
+import org.geo2tag.tracker.TrackerActivity;
+import org.geo2tag.tracker.exception.ExceptionHandler;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;

@@ -33,12 +33,13 @@
  * PROJ: OSLL/geo2tag
  * ---------------------------------------------------------------- */
 
-package ru.spb.osll.tracker.preferences;
+package org.geo2tag.tracker.preferences;
 
-import ru.spb.osll.tracker.R;
-import ru.spb.osll.tracker.gui.RadioButtonDialog;
-import ru.spb.osll.tracker.preferences.Settings.ITrackerAppSettings;
-import ru.spb.osll.tracker.preferences.Settings.ITrackerNetSettings;
+import org.geo2tag.tracker.gui.RadioButtonDialog;
+import org.geo2tag.tracker.preferences.Settings.ITrackerAppSettings;
+import org.geo2tag.tracker.preferences.Settings.ITrackerNetSettings;
+
+import org.geo2tag.tracker.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;

@@ -33,16 +33,16 @@
  * PROJ: OSLL/geo2tag
  * ---------------------------------------------------------------- */
 
-package ru.spb.osll.tracker.preferences;
+package org.geo2tag.tracker.preferences;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.geo2tag.tracker.TrackerActivity;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import ru.spb.osll.tracker.R;
-import ru.spb.osll.tracker.TrackerActivity;
+import org.geo2tag.tracker.R;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

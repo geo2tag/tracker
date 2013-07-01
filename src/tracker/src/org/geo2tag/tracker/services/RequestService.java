@@ -29,21 +29,21 @@
  * The advertising clause requiring mention in adverts must never be included.
  */
 
-package ru.spb.osll.tracker.services;
+package org.geo2tag.tracker.services;
 
 import java.util.Date;
 
+import org.geo2tag.tracker.TrackerActivity;
+import org.geo2tag.tracker.TrackerActivity.TrackerReceiver;
+import org.geo2tag.tracker.preferences.Settings;
+import org.geo2tag.tracker.preferences.Settings.ITrackerAppSettings;
+import org.geo2tag.tracker.preferences.Settings.ITrackerNetSettings;
+import org.geo2tag.tracker.utils.AndroidJGeoLogger;
+import org.geo2tag.tracker.utils.TrackerUtil;
 import org.json.JSONObject;
 
 import ru.spb.osll.json.*;
-import ru.spb.osll.tracker.R;
-import ru.spb.osll.tracker.TrackerActivity;
-import ru.spb.osll.tracker.TrackerActivity.TrackerReceiver;
-import ru.spb.osll.tracker.preferences.Settings;
-import ru.spb.osll.tracker.preferences.Settings.ITrackerAppSettings;
-import ru.spb.osll.tracker.preferences.Settings.ITrackerNetSettings;
-import ru.spb.osll.tracker.utils.AndroidJGeoLogger;
-import ru.spb.osll.tracker.utils.TrackerUtil;
+import org.geo2tag.tracker.R;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
