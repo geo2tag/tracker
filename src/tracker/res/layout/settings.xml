@@ -95,16 +95,7 @@
 				android:layout_height="wrap_content"
 				android:id="@+id/edit_server_address"
 				android:singleLine="true"/>
-	        <TextView 
-	        	android:layout_width="fill_parent"
-	        	android:layout_height="wrap_content"
-	        	android:text="@string/db_name"        	
-	        	android:singleLine="true"/>
-			<EditText
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/edit_db_name"
-				android:singleLine="true"/>
+
 	        <TextView 
 	        	android:layout_width="fill_parent"
 	        	android:layout_height="wrap_content"

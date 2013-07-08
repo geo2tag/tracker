@@ -60,6 +60,8 @@ import android.net.NetworkInfo;
 
 public class TrackerUtil {
     
+	public static final String DB_NAME = "tracker_db";
+	
     //
     // TODO move to JGeo
     // 

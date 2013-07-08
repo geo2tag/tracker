@@ -101,7 +101,7 @@ public class RequestService extends LocationService {
 	
 	private void setDb() throws TrackerException{
 		if (mAuthToken != null){
-		    final JsonBaseRequest req = new JsonSetDbRequest(mAuthToken, mSCache.dbName,  mSCache.serverUrl);
+		    final JsonBaseRequest req = new JsonSetDbRequest(mAuthToken, TrackerUtil.DB_NAME,  mSCache.serverUrl);
 	        final JsonSetDbResponse res = new JsonSetDbResponse();
 		    safeSendingRequest(req, res, R.string.msg_srv_setdb_fail, Errno.SUCCESS);
 		    sendToLog(R.string.msg_srv_setdb_success);
@@ -243,7 +243,6 @@ public class RequestService extends LocationService {
         public String pass;
         public String channel;
         public String serverUrl;
-        public String dbName;
         public int trackInterval;
         public boolean isShowTick;
         
@@ -253,7 +252,6 @@ public class RequestService extends LocationService {
             pass = settings.getString(ITrackerNetSettings.PASSWORD, "");
             channel = settings.getString(ITrackerNetSettings.CHANNEL, "");
             serverUrl = settings.getString(ITrackerNetSettings.SERVER_URL, "");
-            dbName = settings.getString(ITrackerNetSettings.DB_NAME, "default");
             trackInterval = settings.getInt(ITrackerNetSettings.TIME_TICK, 30);
             isShowTick = settings.getBoolean(ITrackerAppSettings.IS_SHOW_TICKS, false);
         }       
@@ -262,7 +260,6 @@ public class RequestService extends LocationService {
         public String toString() {
             return "SettingsCache [login=" + login + ", pass=" + pass
                     + ", channel= " + channel + ", serverUrl=" + serverUrl
-                    + ", dbName = " +  dbName
                     + ", trackInterval=" + trackInterval + ", isShowTick="
                     + isShowTick + "]";
         }
