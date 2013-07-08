@@ -103,7 +103,7 @@ public class RequestService extends LocationService {
 		if (mAuthToken != null){
 		    final JsonBaseRequest req = new JsonSetDbRequest(mAuthToken, mSCache.dbName,  mSCache.serverUrl);
 	        final JsonSetDbResponse res = new JsonSetDbResponse();
-		    safeSendingRequest(req, res, R.string.msg_srv_setdb_fail, Errno.SUCCESS, Errno.DB_DOES_NOT_EXIST_ERROR);
+		    safeSendingRequest(req, res, R.string.msg_srv_setdb_fail, Errno.SUCCESS);
 		    sendToLog(R.string.msg_srv_setdb_success);
 		}
 	}
