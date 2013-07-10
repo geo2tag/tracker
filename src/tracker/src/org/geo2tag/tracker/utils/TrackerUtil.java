@@ -60,14 +60,19 @@ import android.net.NetworkInfo;
 
 public class TrackerUtil {
     
-	public static final String DB_NAME = "tracker_db";
-	
+	public static final String DB_NAME = "default";// "tracker_db";
+	private static CharSequence m_log = "";
     //
     // TODO move to JGeo
     // 
 	private static DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy HH:MM:ss.SSS");
 	public static String getTime(Date date){
 		return dateFormat.format(date);
+	}
+	
+	private static DateFormat dateFormatForLog = new SimpleDateFormat("HH:MM:ss");
+	public static String getTimeForLog(Date date){
+		return dateFormatForLog.format(date);
 	}
 	
 	public static final int TRACKER_NOTIFY_ID = 1;
@@ -122,6 +127,14 @@ public class TrackerUtil {
         return false;
     }
 	
+	public static CharSequence getLogText() {
+		return m_log;
+	}
+
+	public static void setLogText(CharSequence m_log) {
+		TrackerUtil.m_log = m_log;
+	}
+
 	public class Logger {
 		private PrintWriter m_logger;
 		

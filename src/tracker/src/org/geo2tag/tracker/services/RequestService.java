@@ -80,6 +80,7 @@ public class RequestService extends LocationService {
                     track();
                 } catch (TrackerException e) {
                     TrackerUtil.disnotify(RequestService.this);
+                    
                     sendToastAndLog(e.getMessage());
                     stopSelf();
                 }
@@ -146,10 +147,11 @@ public class RequestService extends LocationService {
         int failCount = 0;
         while (mTrackerStatus){
             try {
-                boolean success = applyMark(mAuthToken); 
-                failCount = success ? 0 : failCount + 1;
-                if (failCount > 20) {
-                    throw new TrackerException("Connection failed");
+                int success = applyMark(mAuthToken); 
+                if (success == 0) failCount++;
+                
+                if (failCount > 3) {
+                    throw new TrackerException("Connection lost! Stopping tracker.");
                 }
                 Thread.sleep(mSCache.trackInterval*1000);
             } catch (InterruptedException e) {
@@ -158,29 +160,31 @@ public class RequestService extends LocationService {
         }
     }
 
-	private boolean applyMark(String authToken){
+	private int applyMark(String authToken){
 		if (!isDeviceReady()) {
-			return false;
+			return -1;
 		}
 
 		final Location location = getLocation();
 		final double lat = location.getLatitude();
 		final double lon = location.getLongitude();
 		final double alt = 0.0;
+		final Date date = new Date();
 		
 		JSONObject JSONResponse = new JsonApplyMarkRequest(
 				authToken, mSCache.channel, "title", "unknown",
 				"this tag was generated automaticaly by tracker application",
-				lat, lon, alt, TrackerUtil.getTime(new Date()), mSCache.serverUrl).doRequest();
+				lat, lon, alt, TrackerUtil.getTime(date), mSCache.serverUrl).doRequest();
 		
 		if (JSONResponse != null){
             Log.d(TrackerActivity.LOG, JSONResponse.toString());
 		    JsonApplyMarkResponse response = new JsonApplyMarkResponse();
 		    response.parseJson(JSONResponse);
-		    sendToLog(TrackerUtil.convertLocation(lat, lon));
-		    return response.getErrno() == Errno.SUCCESS;
+		    sendToLog(TrackerUtil.getTimeForLog(date) + " " + TrackerUtil.convertLocation(lat, lon));
+		    if (response.getErrno() == Errno.SUCCESS)
+		    	return 1;
 		} 
-		return false;
+		return 0;
 	}
 
     private void sendToLog(int messId) {

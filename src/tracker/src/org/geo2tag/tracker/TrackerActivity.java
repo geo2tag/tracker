@@ -60,6 +60,7 @@ public class TrackerActivity extends Activity {
 
 	private TextView mLogView;
     private BroadcastReceiver mTrackerReceiver = new TrackerReceiver();
+    private CharSequence m_logText = "";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,20 @@ public class TrackerActivity extends Activity {
 		super.onDestroy();
 		unregisterReceiver(mTrackerReceiver);
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		mLogView.setText(TrackerUtil.getLogText());
+
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		TrackerUtil.setLogText(mLogView.getText());
+	}
+	
 
 	private void initialization(){
 		Log.v(LOG, "TrackerActivity - initialization");
