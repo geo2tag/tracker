@@ -76,15 +76,32 @@ public class TrackerUtil {
 	}
 	
 	public static final int TRACKER_NOTIFY_ID = 1;
-	public static void notify(Context c){
+	
+	public static void notify(Context c, boolean isTrackerRunning){		
 		NotificationManager nm = (NotificationManager)c.getSystemService(Context.NOTIFICATION_SERVICE);
 		String title = "Geo2Tag Traker service";
-		String expandedText = "Geo2Tag Traker service is running";
-		Notification notification = new Notification(R.drawable.icon, title, System.currentTimeMillis());
+		String expandedText;
+		
+		int icon; 
+		
+		if (isTrackerRunning){
+			icon = R.drawable.icon;
+		 	expandedText = "Geo2Tag Traker service is running";
+		}
+		else {
+			icon = R.drawable.icon_bw;
+			expandedText = "Geo2Tag Traker service stopped";
+		}
+		
+		Notification notification = new Notification(icon, title, System.currentTimeMillis());
 		Intent i = new Intent(c, TrackerActivity.class);
 		PendingIntent launchIntent = PendingIntent.getActivity(c, 0, i, 0);
 		notification.setLatestEventInfo(c, title, expandedText, launchIntent);
 		nm.notify(TRACKER_NOTIFY_ID,notification);
+	}
+	
+	public static void notify(Context c){
+		notify(c,false);
 	}	
 		
 	public static void disnotify(Context c){

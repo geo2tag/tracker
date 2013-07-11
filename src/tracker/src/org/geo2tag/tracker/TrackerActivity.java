@@ -52,6 +52,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -59,13 +60,13 @@ import android.widget.Toast;
 
 public class TrackerActivity extends Activity {
 	public static String LOG = "Tracker";
-
-	private String mCurrentCoordinates = null; 
 	
 	private TextView mLogView;
 	private TextView mStatusView;
     private BroadcastReceiver mTrackerReceiver = new TrackerReceiver();
     private BroadcastReceiver mLocationReceiver = new LocationReceiver();
+    
+    private Button mBtnService; 
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -130,18 +131,22 @@ public class TrackerActivity extends Activity {
 	private void initialization(){
 		Log.v(LOG, "TrackerActivity - initialization");
 		
+
 		refreshStatusTextView();
 		
-		final Button btnService = (Button) findViewById(R.id.start_stop_button);
-		btnService.setOnClickListener(new View.OnClickListener() {
+		mBtnService = (Button) findViewById(R.id.start_stop_button);
+		
+		
+		boolean trackerState = TrackerUtil.isServiceRunning(this, RequestService.class);
+		TrackerUtil.notify(this, trackerState);
+		
+		mBtnService.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	if (TrackerUtil.isServiceRunning(TrackerActivity.this, RequestService.class)){
             		Log.v(LOG, "Tracker is running, stopping");
-            		btnService.setText(getResources().getString(R.string.btnStart));
             		stopTracker();
             	}else{
             		Log.v(LOG, "Tracker is stopped, running");
-            		btnService.setText(getResources().getString(R.string.btnStop));
             		startTracker();
             	}
             }
@@ -167,6 +172,18 @@ public class TrackerActivity extends Activity {
 				TrackerUtil.hideApplication(TrackerActivity.this); 
 			}
 		});
+	
+		
+	}
+	
+	
+	public boolean onKeyDown(int keycode, KeyEvent event) {
+	    if (keycode == KeyEvent.KEYCODE_BACK) {
+	    	stopTracker();
+			TrackerUtil.disnotify(TrackerActivity.this);
+	        moveTaskToBack(true);
+	    }
+	    return super.onKeyDown(keycode, event);
 	}
 	
 	private void startTracker(){
@@ -174,8 +191,13 @@ public class TrackerActivity extends Activity {
 			showToast(R.string.msg_tracker_already_running);
 		} else if (TrackerUtil.isOnline(this)){
 			showToast(R.string.msg_tracker_start);
+    		mBtnService.setText(getResources().getString(R.string.btnStop));
+    		
+    		TrackerUtil.disnotify(this);
+    		TrackerUtil.notify(this, true);
+    		
 			clearLogView();
-			TrackerUtil.notify(this);
+
 			startService(new Intent(this, RequestService.class));
 			
 			if (Settings.getPreferences(this).getBoolean(ITrackerAppSettings.IS_HIDE_APP, true)){
@@ -189,7 +211,10 @@ public class TrackerActivity extends Activity {
 	private void stopTracker(){
 		if (TrackerUtil.isServiceRunning(this, RequestService.class)){
 			showToast(R.string.msg_tracker_stop);
-			TrackerUtil.disnotify(this);
+			mBtnService.setText(getResources().getString(R.string.btnStart));
+    		TrackerUtil.disnotify(this);
+    		TrackerUtil.notify(this, false);
+		//	TrackerUtil.disnotify(this);
 			stopService(new Intent(this, RequestService.class));
 		}
 	}
