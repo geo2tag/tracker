@@ -38,6 +38,8 @@ package org.geo2tag.tracker.preferences;
 import org.geo2tag.tracker.gui.RadioButtonDialog;
 import org.geo2tag.tracker.preferences.Settings.ITrackerAppSettings;
 import org.geo2tag.tracker.preferences.Settings.ITrackerNetSettings;
+import org.geo2tag.tracker.services.RequestService;
+import org.geo2tag.tracker.utils.TrackerUtil;
 
 import org.geo2tag.tracker.R;
 import android.app.Activity;
@@ -64,14 +66,18 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 		initializeTimeTickBtn();
 		
 		Button btnOk = (Button) findViewById(R.id.button_ok);
-		btnOk.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				savePreferences();
-				runOnUiThread(m_saveToast);
-				finish();
-			}
-		});
+	    if (TrackerUtil.isServiceRunning(this, RequestService.class)) {
+	    	btnOk.setEnabled(false);		
+	    }else{
+	    	btnOk.setOnClickListener(new View.OnClickListener() {
+	    		@Override
+	    		public void onClick(View v) {
+	    			savePreferences();
+	    			runOnUiThread(m_saveToast);
+	    			finish();
+	    		}
+	    	});
+	    }
 		
 		Button btnCancel = (Button) findViewById(R.id.button_cancel);
 		btnCancel.setOnClickListener(new View.OnClickListener() {

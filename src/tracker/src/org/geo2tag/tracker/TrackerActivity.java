@@ -157,11 +157,11 @@ public class TrackerActivity extends Activity {
 		settingsBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			    if (TrackerUtil.isServiceRunning(TrackerActivity.this, RequestService.class)) {
-					showToast(R.string.msg_settigns_not_available);
-				} else {
+			 //   if (TrackerUtil.isServiceRunning(TrackerActivity.this, RequestService.class)) {
+				//	showToast(R.string.msg_settigns_not_available);
+				//} else {
 					startActivity(new Intent(TrackerActivity.this, SettingsActivity.class));
-				}
+				//}
 			}
 		});
 
