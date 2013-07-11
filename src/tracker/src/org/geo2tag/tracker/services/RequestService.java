@@ -206,6 +206,9 @@ public class RequestService extends LocationService {
         sendBroadcast(intent);
     }
 
+    
+    
+    
     /*
      * Safe sending requests
      * If after 3 attempts response is't received - throws TrackerException

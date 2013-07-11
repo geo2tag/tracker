@@ -48,6 +48,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,18 +60,24 @@ import android.widget.Toast;
 public class TrackerActivity extends Activity {
 	public static String LOG = "Tracker";
 
-	private TextView mLogView;
-    private BroadcastReceiver mTrackerReceiver = new TrackerReceiver();
-    private CharSequence m_logText = "";
+	private String mCurrentCoordinates = null; 
 	
+	private TextView mLogView;
+	private TextView mStatusView;
+    private BroadcastReceiver mTrackerReceiver = new TrackerReceiver();
+    private BroadcastReceiver mLocationReceiver = new LocationReceiver();
+    
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 		registerReceiver(mTrackerReceiver, new IntentFilter(TrackerReceiver.ACTION_MESS));
+		registerReceiver(mLocationReceiver, new IntentFilter(LocationReceiver.ACTION_LOCATION));
 		
 		mLogView = (TextView) findViewById(R.id.TextField);
+		mStatusView = (TextView) findViewById(R.id.status_text_view);
+		
 		initialization();
 		
 		Settings settings = new Settings(this);
@@ -82,12 +90,14 @@ public class TrackerActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(mTrackerReceiver);
+		unregisterReceiver(mLocationReceiver);
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		mLogView.setText(TrackerUtil.getLogText());
+		refreshStatusTextView();
 
 	}
 	
@@ -97,24 +107,46 @@ public class TrackerActivity extends Activity {
 		TrackerUtil.setLogText(mLogView.getText());
 	}
 	
+	private void refreshStatusTextView(){
 
+		SharedPreferences settings = new Settings(this).getPreferences();
+		String channelName = settings.getString(Settings.ITrackerNetSettings.CHANNEL, "");
+		String statusText = "";
+		
+		statusText = "Channel: "+channelName;
+
+		
+		mStatusView.setText(statusText);
+	}
+	
+	private void refreshStatusTextView(String location){
+		refreshStatusTextView();
+		mStatusView.setText(mStatusView.getText().toString()+", "+location);
+		
+		Log.v(LOG, mStatusView.getText().toString());
+	}
+	
+	
 	private void initialization(){
 		Log.v(LOG, "TrackerActivity - initialization");
 		
-		Button btnService = (Button) findViewById(R.id.start_button);
+		refreshStatusTextView();
+		
+		final Button btnService = (Button) findViewById(R.id.start_stop_button);
 		btnService.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	startTracker();
+            	if (TrackerUtil.isServiceRunning(TrackerActivity.this, RequestService.class)){
+            		Log.v(LOG, "Tracker is running, stopping");
+            		btnService.setText(getResources().getString(R.string.btnStart));
+            		stopTracker();
+            	}else{
+            		Log.v(LOG, "Tracker is stopped, running");
+            		btnService.setText(getResources().getString(R.string.btnStop));
+            		startTracker();
+            	}
             }
         });
 
-		final Button stopBtn = (Button) findViewById(R.id.stop_button);
-		stopBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				stopTracker();
-			}
-		});
 		
 		final Button settingsBtn = (Button) findViewById(R.id.settings_button);
 		settingsBtn.setOnClickListener(new View.OnClickListener() {
@@ -235,5 +267,18 @@ public class TrackerActivity extends Activity {
                     break;
             }
 		}
+	}
+	
+	public class LocationReceiver extends BroadcastReceiver {
+		public static final String ACTION_LOCATION	 = "action.location";
+		public static final String TYPE_LOCATION = "type.location";
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+				final String location = intent.getStringExtra(TYPE_LOCATION);
+				refreshStatusTextView (location);
+					
+		}		
+				
 	}
 }

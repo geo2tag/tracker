@@ -35,7 +35,9 @@ package org.geo2tag.tracker.services;
 import java.util.List;
 
 import org.geo2tag.tracker.TrackerActivity;
+import org.geo2tag.tracker.TrackerActivity.LocationReceiver;
 import org.geo2tag.tracker.exception.ExceptionHandler;
+import org.geo2tag.tracker.utils.TrackerUtil;
 
 import android.app.Service;
 import android.content.Context;
@@ -74,6 +76,9 @@ class LocationService extends Service {
 
     private LocationListener mLocationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
+        	if (location != null)
+        		sendLocation(location);
+        	
             if (!isDeviceReady && location != null) {
                 isDeviceReady = true;
             } else if (isDeviceReady && location == null) {
@@ -122,8 +127,19 @@ class LocationService extends Service {
                 }
             }
         }
+        
+        
+        
         return bestResult;
     }	
+    
+    private void sendLocation(Location location) {
+        Intent intent = new Intent(LocationReceiver.ACTION_LOCATION);
+        intent.putExtra(LocationReceiver.TYPE_LOCATION, 
+        		TrackerUtil.convertLocation(location.getLatitude(), location.getLongitude()));
+        sendBroadcast(intent);
+    }
+    
     
     @Override
     public IBinder onBind(Intent intent) {

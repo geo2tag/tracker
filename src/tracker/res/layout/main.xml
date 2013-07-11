@@ -36,16 +36,12 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content">
 
-			<Button android:id="@+id/start_button"
+			<Button android:id="@+id/start_stop_button"
 			    android:layout_width="fill_parent" 
 			    android:layout_height="wrap_content" 
 			    android:text="@string/btnStart"
 			/>    
-			<Button android:id="@+id/stop_button"
-			    android:layout_width="fill_parent" 
-			    android:layout_height="wrap_content" 
-			    android:text="@string/btnStop"
-			/> 
+
 			<Button android:id="@+id/settings_button"
 			    android:layout_width="fill_parent" 
 			    android:layout_height="wrap_content" 
@@ -59,6 +55,11 @@
 		</LinearLayout>
 	</LinearLayout>
     
+	<TextView android:id="@+id/status_text_view"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content" 
+	    />
+	
 	<ScrollView
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content">
