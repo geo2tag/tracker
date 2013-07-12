@@ -140,6 +140,8 @@ public class TrackerActivity extends Activity {
 		boolean trackerState = TrackerUtil.isServiceRunning(this, RequestService.class);
 		TrackerUtil.notify(this, trackerState);
 		
+		if (trackerState) mBtnService.setText(getResources().getString(R.string.btnStop));
+		
 		mBtnService.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	if (TrackerUtil.isServiceRunning(TrackerActivity.this, RequestService.class)){
