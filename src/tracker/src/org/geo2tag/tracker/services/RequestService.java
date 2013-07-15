@@ -180,7 +180,13 @@ public class RequestService extends LocationService {
             Log.d(TrackerActivity.LOG, JSONResponse.toString());
 		    JsonApplyMarkResponse response = new JsonApplyMarkResponse();
 		    response.parseJson(JSONResponse);
-		    sendToLog(TrackerUtil.getTimeForLog(date) + " " + TrackerUtil.convertLocation(lat, lon));
+		    
+		    String message = TrackerUtil.getTimeForLog(date) + " " + TrackerUtil.convertLocation(lat, lon);
+		    
+		    if (mSCache.isShowTick)
+		    	sendToastAndLog(message);
+		    else
+		    	sendToLog(message);
 		    if (response.getErrno() == Errno.SUCCESS)
 		    	return 1;
 		} 
