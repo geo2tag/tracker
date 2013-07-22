@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -27,6 +28,7 @@ public class MapView extends WebView {
 		
 		WebSettings webSettings = getSettings();
 		webSettings.setJavaScriptEnabled(true);
+		setWebChromeClient(new WebChromeClient());
 		
 		init();
 		// TODO Auto-generated constructor stub

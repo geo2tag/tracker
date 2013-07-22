@@ -45,13 +45,13 @@ public class MapActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		unregisterReceiver(m_locationReceiver);
 
 	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		unregisterReceiver(m_locationReceiver);
 	}
 	
 	@Override
