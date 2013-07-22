@@ -34,8 +34,8 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.geo2tag.tracker"
-      android:versionCode="2"
-      android:versionName="1.1">
+      android:versionCode="3"
+      android:versionName="1.2">
 	  
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	<uses-permission android:name="android.permission.INTERNET" />
@@ -48,6 +48,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="org.geo2tag.tracker.MapActivity" android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait" />
        	<activity android:name="org.geo2tag.tracker.preferences.SettingsActivity" android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait" />
 	    <activity android:name="org.geo2tag.tracker.exception.ExceptionActivity" android:configChanges="orientation|keyboardHidden" android:screenOrientation="portrait" />
 	   

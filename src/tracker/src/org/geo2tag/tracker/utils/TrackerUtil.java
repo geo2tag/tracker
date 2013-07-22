@@ -60,7 +60,7 @@ import android.net.NetworkInfo;
 
 public class TrackerUtil {
     
-	public static final String DB_NAME = "default";// "tracker_db";
+	public static final String DB_NAME = "tracker_db";
 	private static CharSequence m_log = "";
     //
     // TODO move to JGeo
