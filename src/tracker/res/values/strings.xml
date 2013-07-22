@@ -57,6 +57,7 @@
 	<string name="btnStop">Stop Tracker</string>
 	<string name="btnSettings">Settings</string>
 	<string name="btnHide">Hide</string>
+	<string name="btnMap">Map</string>
 	
 <!-- messages -->
 	<string name="msg_srv_setdb_fail">SetDb failed</string>

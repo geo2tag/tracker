@@ -52,7 +52,11 @@
 			    android:layout_height="wrap_content" 
 			    android:text="@string/btnHide"
 			/>   
-
+			<Button android:id="@+id/map_button"
+			    android:layout_width="fill_parent" 
+			    android:layout_height="wrap_content" 
+			    android:text="@string/btnMap"
+			/>  
 		</LinearLayout>
 	</LinearLayout>
     

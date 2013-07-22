@@ -159,19 +159,23 @@ public class TrackerActivity extends Activity {
 		settingsBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			 //   if (TrackerUtil.isServiceRunning(TrackerActivity.this, RequestService.class)) {
-				//	showToast(R.string.msg_settigns_not_available);
-				//} else {
-					startActivity(new Intent(TrackerActivity.this, SettingsActivity.class));
-				//}
+				startActivity(new Intent(TrackerActivity.this, SettingsActivity.class));
 			}
 		});
 
-		final Button creenBtn = (Button) findViewById(R.id.screeen_down_button);
-		creenBtn.setOnClickListener(new View.OnClickListener() {
+		final Button screenBtn = (Button) findViewById(R.id.screeen_down_button);
+		screenBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				TrackerUtil.hideApplication(TrackerActivity.this); 
+			}
+		});
+		
+		final Button mapBtn = (Button) findViewById(R.id.map_button);
+		mapBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(TrackerActivity.this, MapActivity.class));
 			}
 		});
 	
