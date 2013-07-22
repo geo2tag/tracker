@@ -43,8 +43,6 @@ import org.geo2tag.tracker.utils.TrackerUtil;
 
 import org.geo2tag.tracker.R;
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -56,14 +54,18 @@ import android.widget.Toast;
 
 public class SettingsActivity extends Activity implements ITrackerNetSettings, ITrackerAppSettings {
 	
+	private final String[] TRACKING_PERIOD_ARGS = {"1", "2", "3", "4", "5", "10", "20", "30", "40", "50", "60"};
+	private final String[] MAP_RADIUS_ARGS = {"1", "5", "10", "20", "50", "100"};
+	
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings);
 	
-		setTitle("Tracker Settings");
+		setTitle(getResources().getText(R.string.settings_activity_name));
 		initializeFields();
-		initializeTimeTickBtn();
+		initializePickButtons();
 		
 		Button btnOk = (Button) findViewById(R.id.button_ok);
 	    if (TrackerUtil.isServiceRunning(this, RequestService.class)) {
@@ -88,7 +90,6 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 		});
 	}
 	
-	private int m_timeTick;
 	private void initializeFields(){
 		initField(LOGIN, R.id.edit_login);
 		initField(PASSWORD, R.id.edit_password);
@@ -98,15 +99,26 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 		initCheckBox(IS_SHOW_TICKS, R.id.checkbox_tick);
 	}
 	
-	private void initializeTimeTickBtn(){
-		m_timeTick = new Settings(this).getPreferences().getInt(TIME_TICK, 0);
+	private void initializePickButtons(){
+		
+		initializePickButton(TIME_TICK, R.string.tick_interval_name, R.id.button_settings_tick, TRACKING_PERIOD_ARGS );
+		initializePickButton(RADIUS, R.string.map_radius_name, R.id.button_settings_radius, MAP_RADIUS_ARGS );
+	}
+	
+	private void initializePickButton(String prefKey, int dialogTitleId, 
+			int buttonId, final String[] args){
+		
+		final int value = new Settings(this).getPreferences().getInt(/*TIME_TICK*/prefKey, 0);
 
-		Button btnTick = (Button) findViewById(R.id.button_settings_tick);
-		btnTick.setText(Integer.toString(m_timeTick));
-		btnTick.setOnClickListener(new View.OnClickListener() {
+		final String dialogTitle = getResources().getText(dialogTitleId).toString();
+		
+		final Button btn = (Button) findViewById(buttonId);
+		btn.setText(Integer.toString(value));
+		btn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				new TimeTickDialog(SettingsActivity.this, getIdx(m_timeTick)).show();
+				new RadioButtonDialog(SettingsActivity.this, dialogTitle, args,
+						getIdx(value, args), btn).show();
 			}
 		});
 
@@ -118,7 +130,10 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 		saveField(PASSWORD, R.id.edit_password, prefEditor);
 		saveField(CHANNEL, R.id.edit_channel, prefEditor);
 		saveField(SERVER_URL, R.id.edit_server_address, prefEditor);
-		prefEditor.putInt(TIME_TICK, m_timeTick);
+		
+		saveIntField(TIME_TICK, R.id.button_settings_tick, prefEditor);
+		saveIntField(RADIUS, R.id.button_settings_radius, prefEditor);
+		//prefEditor.putInt(TIME_TICK, m_timeTick);
 		
 		saveCheckBox(IS_HIDE_APP, R.id.checkbox_hide, prefEditor);
 		saveCheckBox(IS_SHOW_TICKS, R.id.checkbox_tick, prefEditor);
@@ -149,14 +164,20 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 		prefEditor.putString(key, str);
 	}
 
+	private void saveIntField(String key, int idField, Editor prefEditor){
+		String str = ((Button) findViewById(idField)).getText().toString();
+		int value = Integer.parseInt(str);
+		
+		prefEditor.putInt(key, value);
+	}
+	
 	private void saveCheckBox(String key, int id, Editor prefEditor){
 		boolean status = ((CheckBox) findViewById(id)).isChecked();
 		prefEditor.putBoolean(key, status);
 	}
 
-
-	String[] args = {"1", "2", "3", "4", "5", "10", "20", "30", "40", "50", "60"};
-	private int getIdx(int val){
+	
+	private int getIdx(int val, String[] args){
 		for (int i = 0; i < args.length; i++){
 			if (args[i].equals(Integer.toString(val)))
 				return i;
@@ -164,15 +185,11 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 		return 0;
 	}
 	
-	class TimeTickDialog extends RadioButtonDialog{
-		public TimeTickDialog(Context context, int selectedItem) {
-			super(context, "Tick interval", args, selectedItem);
-		}
-		@Override
-		protected void itemSelected(DialogInterface dialog, int item) {
-			super.itemSelected(dialog, item);
-			m_timeTick = Integer.parseInt(args[item]);
-			((Button) findViewById(R.id.button_settings_tick)).setText(Integer.toString(m_timeTick));
-		}	
-	}
+	
+//	class TimeTickDialog extends RadioButtonDialog{
+//		public TimeTickDialog(Context context, int selectedItem) {
+//			super(context, "Tick interval", trackingPeriodArgs, selectedItem);
+//		}
+//			
+//	}
 }

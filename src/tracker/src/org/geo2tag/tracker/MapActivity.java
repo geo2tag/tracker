@@ -3,8 +3,6 @@
  */
 package org.geo2tag.tracker;
 
-import org.geo2tag.tracker.utils.TrackerUtil;
-
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -17,6 +15,7 @@ public class MapActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
+		setTitle(getResources().getText(R.string.map_activity_name));
 	}
 	
 	@Override

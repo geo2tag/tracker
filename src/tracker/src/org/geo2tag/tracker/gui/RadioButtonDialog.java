@@ -38,32 +38,52 @@ package org.geo2tag.tracker.gui;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.widget.Button;
  
 public class RadioButtonDialog{
-	protected Context myContext;
-	private String myTitle;
-	private String[] myItems;
-	private int mySelectedItem;
+	protected Context m_context;
+	private String m_title;
+	private String[] m_items;
+	private Button m_button; // THis button will be updated after dialog dissmiss
+	private int m_selectedItem;
 	
-	public RadioButtonDialog(Context context, String title, String[] items, int selectedItem){
-		myContext = context;
-		myTitle = title;
-		myItems = items;
-		mySelectedItem = selectedItem;
+	public String[] getItems() {
+		return m_items;
+	}
+
+
+	public void setItems(String[] myItems) {
+		this.m_items = myItems;
+	}
+
+
+	
+	public RadioButtonDialog(Context context, String title, String[] items, int selectedItem,
+			Button button){
+		m_context = context;
+		m_title = title;
+		m_items = items;
+		m_selectedItem = selectedItem;
+		m_button = button;
 	}
 
 	protected void itemSelected(DialogInterface dialog, int item){
+		String str = getItems()[item];
+		
+		m_button.setText(str);
 		dialog.dismiss();
 	}
 	
 	public void show(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
-		builder.setTitle(myTitle);
-		builder.setSingleChoiceItems(myItems, mySelectedItem, new DialogInterface.OnClickListener() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(m_context);
+		builder.setTitle(m_title);
+		builder.setSingleChoiceItems(m_items, m_selectedItem, new DialogInterface.OnClickListener() {
 		    public void onClick(DialogInterface dialog, int item) {
 		    	itemSelected(dialog, item);
 		    }
 		});
 		builder.create().show();
 	}
+	
+
 }

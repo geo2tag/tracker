@@ -36,7 +36,11 @@
 <resources>
     <string name="app_name">Geo2Tag Tracker</string>
     
-    
+<!-- activites -->  
+   	<string name="map_activity_name">Map</string>
+   	<string name="settings_activity_name">Tracker Settings</string>    
+   	
+   	
 <!-- settings -->
    	<string name="login">Login</string>
    	<string name="password">Password</string>
@@ -46,6 +50,10 @@
 	<string name="radius">Radius</string>
 	<string name="uri">Uri</string>
 	<string name="db_name">Db Name</string>
+	<string name="tick_interval_name">Tick interval</string>
+	<string name="map_radius_name">Map radius (km)</string>
+	
+	
 <!-- CheckBox -->
 	<string name="checkbox_hide_on_start">Hide tracker on start</string>
 	<string name="checkbox_show_tick_toast">Show tick toast</string>
