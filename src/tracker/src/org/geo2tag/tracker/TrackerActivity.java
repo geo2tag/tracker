@@ -40,6 +40,7 @@ import org.geo2tag.tracker.preferences.Settings;
 import org.geo2tag.tracker.preferences.SettingsActivity;
 import org.geo2tag.tracker.preferences.Settings.ITrackerAppSettings;
 import org.geo2tag.tracker.services.RequestService;
+import org.geo2tag.tracker.services.LocationService;
 import org.geo2tag.tracker.utils.TrackerUtil;
 
 import org.geo2tag.tracker.R; 
@@ -49,7 +50,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -74,7 +74,7 @@ public class TrackerActivity extends Activity {
 		setContentView(R.layout.main);
 		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 		registerReceiver(mTrackerReceiver, new IntentFilter(TrackerReceiver.ACTION_MESS));
-		registerReceiver(mLocationReceiver, new IntentFilter(LocationReceiver.ACTION_LOCATION));
+		registerReceiver(mLocationReceiver, new IntentFilter(LocationService.ACTION_LOCATION));
 		
 		mLogView = (TextView) findViewById(R.id.TextField);
 		mStatusView = (TextView) findViewById(R.id.status_text_view);
@@ -159,19 +159,23 @@ public class TrackerActivity extends Activity {
 		settingsBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-			 //   if (TrackerUtil.isServiceRunning(TrackerActivity.this, RequestService.class)) {
-				//	showToast(R.string.msg_settigns_not_available);
-				//} else {
-					startActivity(new Intent(TrackerActivity.this, SettingsActivity.class));
-				//}
+				startActivity(new Intent(TrackerActivity.this, SettingsActivity.class));
 			}
 		});
 
-		final Button creenBtn = (Button) findViewById(R.id.screeen_down_button);
-		creenBtn.setOnClickListener(new View.OnClickListener() {
+		final Button screenBtn = (Button) findViewById(R.id.screeen_down_button);
+		screenBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				TrackerUtil.hideApplication(TrackerActivity.this); 
+			}
+		});
+		
+		final Button mapBtn = (Button) findViewById(R.id.map_button);
+		mapBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(TrackerActivity.this, MapActivity.class));
 			}
 		});
 	
@@ -297,12 +301,11 @@ public class TrackerActivity extends Activity {
 	}
 	
 	public class LocationReceiver extends BroadcastReceiver {
-		public static final String ACTION_LOCATION	 = "action.location";
-		public static final String TYPE_LOCATION = "type.location";
+
 		
 		@Override
 		public void onReceive(Context context, Intent intent) {
-				final String location = intent.getStringExtra(TYPE_LOCATION);
+				final String location = intent.getStringExtra(LocationService.TYPE_LOCATION_TEXT);
 				refreshStatusTextView (location);
 					
 		}		

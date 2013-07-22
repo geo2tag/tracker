@@ -42,7 +42,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 public class ConfigFeedParser extends DefaultHandler implements IXMLSettrings {
 	private Editor m_configEditor;
@@ -73,6 +72,8 @@ public class ConfigFeedParser extends DefaultHandler implements IXMLSettrings {
     		m_configEditor.putString(ITrackerNetSettings.SERVER_URL, m_sb.toString());
     	} else if (localName.equals(time_tick)){
     		m_configEditor.putInt(ITrackerNetSettings.TIME_TICK, Integer.parseInt(m_sb.toString()));
+    	} else if (localName.equals(radius)){
+    		m_configEditor.putInt(ITrackerNetSettings.RADIUS, Integer.parseInt(m_sb.toString()));
     	} else if (localName.equals(show_tick)){
     		boolean val = m_sb.toString().equals("true") ? true : false; 
     		m_configEditor.putBoolean(ITrackerAppSettings.IS_SHOW_TICKS, val);
@@ -96,6 +97,7 @@ interface IXMLSettrings{
 	String channel     = "channel";
 	String server_url  = "server_url";
 	String time_tick   = "time_tick";
+	String radius	   = "radius";
 	String show_tick   = "show_tick";
 	String hide_app    = "hide_app";
 }
