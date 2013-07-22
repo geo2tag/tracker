@@ -42,7 +42,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 public class ConfigFeedParser extends DefaultHandler implements IXMLSettrings {
 	private Editor m_configEditor;

@@ -40,6 +40,7 @@ import org.geo2tag.tracker.preferences.Settings;
 import org.geo2tag.tracker.preferences.SettingsActivity;
 import org.geo2tag.tracker.preferences.Settings.ITrackerAppSettings;
 import org.geo2tag.tracker.services.RequestService;
+import org.geo2tag.tracker.services.LocationService;
 import org.geo2tag.tracker.utils.TrackerUtil;
 
 import org.geo2tag.tracker.R; 
@@ -73,7 +74,7 @@ public class TrackerActivity extends Activity {
 		setContentView(R.layout.main);
 		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 		registerReceiver(mTrackerReceiver, new IntentFilter(TrackerReceiver.ACTION_MESS));
-		registerReceiver(mLocationReceiver, new IntentFilter(LocationReceiver.ACTION_LOCATION));
+		registerReceiver(mLocationReceiver, new IntentFilter(LocationService.ACTION_LOCATION));
 		
 		mLogView = (TextView) findViewById(R.id.TextField);
 		mStatusView = (TextView) findViewById(R.id.status_text_view);
@@ -300,12 +301,11 @@ public class TrackerActivity extends Activity {
 	}
 	
 	public class LocationReceiver extends BroadcastReceiver {
-		public static final String ACTION_LOCATION	 = "action.location";
-		public static final String TYPE_LOCATION = "type.location";
+
 		
 		@Override
 		public void onReceive(Context context, Intent intent) {
-				final String location = intent.getStringExtra(TYPE_LOCATION);
+				final String location = intent.getStringExtra(LocationService.TYPE_LOCATION_TEXT);
 				refreshStatusTextView (location);
 					
 		}		
