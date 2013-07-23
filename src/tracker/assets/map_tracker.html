@@ -22,9 +22,11 @@
 
 		var token = "";
 
-			
+		console.log("Head");
 
 		function initWithSettings(login, password, radius, dbName, serverUrl){
+			console.log("initWithSettings");
+		
 			this.token = "";
 
 			this.login = login;
@@ -37,20 +39,22 @@
 			refresh();
 		}
 
-		function updateMapCenter(latitude, lognitude){
+		function updateMapCenter(latitude, longitude){
+			console.log("Updating center with "+ latitude + " " + longitude);
+			
 			mapWidget.changeMapCenter(latitude, longitude);	
 
 		}	
 
 		function refresh(){
-
+			console.log("refresh");
 			if (token == ""){
 				//console.log("onlyLastTag:"+onlyLastTag);
 				mapWidget.addEventListener("onLoginSuccess",onMapWidgetLogin);
 				//mapWidget.setShowOnlyLastTag(onlyLastTag);
 				mapWidget.addEventListener("onLoginSuccess",onMapWidgetLogin);
 				mapWidget.addEventListener("onErrorOccured", onError);
-				mapWidget.addEventListener("onFilterSuccess", stopSpinner);
+				mapWidget.addEventListener("onFilterSuccess", onDataLoaded);
 				//mapWidget.setShowOnlyLastTag(onlyLastTag);
 				mapWidget.login(login, password);
 			} else {
@@ -59,7 +63,46 @@
 			spinner.spin(target);
 		}
 		
+		/*
+		 * @param {string} date - date in format "date month year hour:minutes:seconds.milliseconds" 
+		 * @return {integer} - representation of a date
+		 */
+		function dateToInt(date){
+			var arr = date.split(/[ .:]/);
+			
+			var result = arr[2]+arr[1]+arr[0]+arr[3]+arr[4]+arr[5]+arr[6];
+			
+			return result;
+		}
+		
+		function onDataLoaded(){
+			console.log("onDataLoaded()");
+			console.log(mapWidget.markers.length);
+			if (mapWidget.markers.length != 0 ){
+				console.log("mapWidget.markers.length != 0 ");
+				
+				var lastDate = dateToInt(mapWidget.markers[0].pubDate);
+				var iLast = 0;
+				for (var i=1; i<mapWidget.markers.length; i++){
+					var currentDate = dateToInt(mapWidget.markers[i].pubDate);
+					console.log(mapWidget.markers[iLast].pubDate+"|"+mapWidget.markers[i].pubDate);
+					if (currentDate > lastDate){
+						lastDate = currentDate;
+						iLast = i;
+						console.log("New last element found" + i);
+					}	
+				}
+				console.log("Last date = " + mapWidget.markers[iLast].pubDate);
+				var lastMarker = mapWidget.markers[iLast];
+				var latLng = lastMarker.getLatLng();
+				console.log("Last tag coordinates, lat="+latLng.lat+", lon="+latLng.lng);
+				updateMapCenter(latLng.lat, latLng.lng);
+			}
+			stopSpinner();
+		}
+		
 		function onError(){
+			console.log("onError!");
 			alert("Error during map loading.");
 			stopSpinner();
 		}
@@ -86,20 +129,7 @@
 			mapWidget.filterCircle(latitude, longitude, radius, getPastDateTime(1), getCurrentDateTime(), tagNumber);
 			
 		}
-		
-		
-		
-		function onContextMenu(e){
-			console.log("Map clicked at "+e.latlng);
 			
-			latitude = e.latlng.lat;
-			longitude = e.latlng.lng;
-			
-			updateMapCenter(e.latlng.lat, e.latlng.lng);
-			//alert("You clicked the map at " + e.latlng);
-		}
-		
-		
 	
 	</script>
 </head>
@@ -109,12 +139,12 @@
 
 
 	<script>
+		console.log("Body");
 		var latitude = 60;//LAT_PLACEHOLDER;
 		var longitude = 30;//LON_PLACEHOLDER;
 	
 		var mapWidget = new MapWidget(latitude, longitude, "map");
 		mapWidget.showLayerControl = false;
-		mapWidget.map.on("contextmenu", onContextMenu);
 		
 		var opts = {
 		  lines: 17, // The number of lines to draw
@@ -137,7 +167,7 @@
 		var target = document.getElementById('map');
 		var spinner = new Spinner(opts);
 		
-		//onRefreshButtonClicked();
+		//initWithSettings("Mark", "test", 1000, "tracker_db", "http://194.85.173.9:20005/service");
 		
 	</script>
 </body>	

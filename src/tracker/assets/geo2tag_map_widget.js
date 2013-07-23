@@ -168,12 +168,15 @@ MapWidget.prototype.addFilterResultsToMap = function (channels){
 			tag["channel"] = channelName;
 			var currentMarker = L.marker([tag.latitude, tag.longitude]).
 			bindPopup(DataMark.getStringRepresentation(tag));
-		 
+			currentMarker.pubDate = tag.pubDate;
+			
 			this.markers.push(currentMarker);
 		
 			tagMarkers[channelName].push(currentMarker);
 		}
 	}
+	
+	console.log("this.markers.length =" + this.markers.length);
 	
 	this.addLayerControl(tagMarkers);
 };
@@ -181,9 +184,8 @@ MapWidget.prototype.addFilterResultsToMap = function (channels){
 
 MapWidget.prototype.onFilterSuccess = function (jsonResponse){
 
-	this.raiseEvent("onFilterSuccess");
-
 	this.addFilterResultsToMap(jsonResponse.channels);
+	this.raiseEvent("onFilterSuccess");
 }	
 		
 /*

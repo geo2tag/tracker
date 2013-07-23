@@ -13,10 +13,14 @@ import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 public class MapView extends WebView {
 
+	
 	private static final String MAP_FILE = "file:///android_asset/map_tracker.html"; 
+	private static final String REFRESH_URL = "javascript:refresh();"; 
+	
 	private Settings m_settings;
 	
 	
@@ -30,17 +34,22 @@ public class MapView extends WebView {
 		webSettings.setJavaScriptEnabled(true);
 		setWebChromeClient(new WebChromeClient());
 		
+		
 		init();
-		// TODO Auto-generated constructor stub
 	}
 	
 	private void init(){
 		
 		loadUrl(MAP_FILE);
-		initMapWidget();
+		setWebViewClient(new WebViewClient() {
+		    public void onPageFinished(WebView view, String url) {
+		    	initMapWidget();
+		    }
+		});
+		
 	}
 
-	private void initMapWidget(){
+	public void initMapWidget(){
 		SharedPreferences preferencies = m_settings.getPreferences();
 		
 		String login =  preferencies.getString(Settings.ITrackerNetSettings.LOGIN, "");
@@ -49,7 +58,7 @@ public class MapView extends WebView {
 		String dbName =  TrackerUtil.DB_NAME;
 		int radius =  preferencies.getInt(Settings.ITrackerNetSettings.RADIUS, 0);
 		
-		String url = String.format("javascript:initWithSettings(%s, %s, %d, %s, %s);", 
+		String url = String.format("javascript:initWithSettings('%s', '%s', %d, '%s', '%s');", 
 				login, password, radius, dbName, serverUrl);
 		Log.d(TrackerActivity.LOG, url);
 
@@ -57,9 +66,15 @@ public class MapView extends WebView {
 	}
 	
 	public void updateMapWidgetCoordinates(double latitude, double longitude){
-		String url = String.format("javascript:updateMapCenter(%f, %f); javascript:refresh();", 
+		String url = String.format("javascript:updateMapCenter(%f, %f);", 
 				latitude, longitude);
 		Log.d(TrackerActivity.LOG, url);
 		loadUrl(url);
 	}
+	
+	public void refreshMapWidget(){
+		loadUrl(REFRESH_URL);
+	}
+	
+
 }

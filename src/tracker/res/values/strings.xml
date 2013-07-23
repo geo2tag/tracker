@@ -40,7 +40,9 @@
    	<string name="map_activity_name">Map</string>
    	<string name="settings_activity_name">Tracker Settings</string>    
    	
-   	
+<!-- menus --> 
+   	<string name="refresh_menu_item">Refresh</string>
+   		
 <!-- settings -->
    	<string name="login">Login</string>
    	<string name="password">Password</string>

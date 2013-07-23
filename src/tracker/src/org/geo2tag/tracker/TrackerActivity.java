@@ -274,7 +274,7 @@ public class TrackerActivity extends Activity {
 	}	
 	
 	public class TrackerReceiver extends BroadcastReceiver {
-		public static final String 	ACTION_MESS   = "action.mess";
+		public static final String ACTION_MESS   = "action.mess";
 		public static final String TYPE_MESS      = "type.mess";
 		public static final String TYPE_OPEATION  = "type.operation";
 		public static final int ID_SHOW_TOAST     = 0;
