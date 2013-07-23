@@ -43,7 +43,8 @@ public class MapView extends WebView {
 		loadUrl(MAP_FILE);
 		setWebViewClient(new WebViewClient() {
 		    public void onPageFinished(WebView view, String url) {
-		    	initMapWidget();
+		    	if (url.equals(MAP_FILE))
+		    		initMapWidget();
 		    }
 		});
 		
