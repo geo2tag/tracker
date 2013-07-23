@@ -12,6 +12,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -26,16 +28,40 @@ public class MapActivity extends Activity {
 	private static final int IDM_REFRESH = 101;
 	
 	private MapView m_mapView;
-/*    private BroadcastReceiver m_locationReceiver = new BroadcastReceiver() {
+
+	private LocationListener m_locationListener = new LocationListener() {
 		
 		@Override
-		public void onReceive(Context context, Intent intent) {
+		public void onStatusChanged(String provider, int status, Bundle extras) {
 			// TODO Auto-generated method stub
-			final Location location = (Location)intent.getParcelableExtra(LocationService.TYPE_LOCATION_OBJ);
-			m_mapView.updateMapWidgetCoordinates(location.getLatitude(), location.getLongitude());
-			Log.d(TrackerActivity.LOG, "Location changed!!!! " + location);
+			
 		}
-	};*/
+		
+		@Override
+		public void onProviderEnabled(String provider) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onProviderDisabled(String provider) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onLocationChanged(Location location) {
+			// TODO Auto-generated method stub
+			Log.d(TrackerActivity.LOG, "MapActivity.onLocationChanged");
+			
+			if (!m_mapView.isInited())
+				m_mapView.init(location.getLatitude(), location.getLongitude());
+			
+			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			locationManager.removeUpdates(m_locationListener);
+		}
+	};
+
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -43,16 +69,26 @@ public class MapActivity extends Activity {
 		setContentView(R.layout.map);
 		setTitle(getResources().getText(R.string.map_activity_name));
 		
-		
-		//registerReceiver(m_locationReceiver, new IntentFilter(LocationService.ACTION_LOCATION));
-		
 		m_mapView = (MapView) findViewById(R.id.map_view);
+		
+		requestLocation();
 	}
 	
+	
+	
+	
+	private void requestLocation() {
+		Log.d(TrackerActivity.LOG, "MapActivity.requestLocation");
+		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, m_locationListener );
+	}
+
+
+
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		//unregisterReceiver(m_locationReceiver);
 
 	}
 	

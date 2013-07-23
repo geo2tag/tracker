@@ -22,6 +22,9 @@ public class MapView extends WebView {
 	private static final String REFRESH_URL = "javascript:refresh();"; 
 	
 	private Settings m_settings;
+	private double m_latitude;
+	private double m_longitude;
+	private boolean m_inited = false;
 	
 	
 	@SuppressLint("SetJavaScriptEnabled")
@@ -34,13 +37,6 @@ public class MapView extends WebView {
 		webSettings.setJavaScriptEnabled(true);
 		setWebChromeClient(new WebChromeClient());
 		
-		
-		init();
-	}
-	
-	private void init(){
-		
-		loadUrl(MAP_FILE);
 		setWebViewClient(new WebViewClient() {
 		    public void onPageFinished(WebView view, String url) {
 		    	if (url.equals(MAP_FILE))
@@ -48,9 +44,23 @@ public class MapView extends WebView {
 		    }
 		});
 		
+		//init();
+	}
+	
+	public boolean isInited(){
+		return m_inited;
+	}
+	
+	
+	public void init(double latitude, double longitude){
+		m_inited = true;
+		m_latitude = latitude;
+		m_longitude = longitude;
+		
+		loadUrl(MAP_FILE);
 	}
 
-	public void initMapWidget(){
+	private void initMapWidget(){
 		SharedPreferences preferencies = m_settings.getPreferences();
 		
 		String login =  preferencies.getString(Settings.ITrackerNetSettings.LOGIN, "");
@@ -59,8 +69,8 @@ public class MapView extends WebView {
 		String dbName =  TrackerUtil.DB_NAME;
 		int radius =  preferencies.getInt(Settings.ITrackerNetSettings.RADIUS, 0);
 		
-		String url = String.format("javascript:initWithSettings('%s', '%s', %d, '%s', '%s');", 
-				login, password, radius, dbName, serverUrl);
+		String url = String.format("javascript:initWithSettings('%s', '%s', %d, '%s', '%s', %f, %f);", 
+				login, password, radius, dbName, serverUrl, m_latitude, m_longitude);
 		Log.d(TrackerActivity.LOG, url);
 
 		loadUrl(url);

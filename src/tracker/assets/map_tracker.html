@@ -19,12 +19,42 @@
 		var dbName = null;
 		var radius = null;
 		var tagNumber = 20;
-
+		var latitude = null;
+		var longitude = null;
+		var mapwidget = null;
+		var target = null;
+		var spinner = null;
 		var token = "";
 
 		console.log("Head");
 
-		function initWithSettings(login, password, radius, dbName, serverUrl){
+		function initWidget(){
+			mapWidget = new MapWidget(latitude, longitude, "map");
+			mapWidget.showLayerControl = false;
+			var opts = {
+			  lines: 17, // The number of lines to draw
+			  length: 34, // The length of each line
+			  width: 8, // The line thickness
+			  radius: 30, // The radius of the inner circle
+			  corners: 1, // Corner roundness (0..1)
+			  rotate: 63, // The rotation offset
+			  direction: 1, // 1: clockwise, -1: counterclockwise
+			  color: '#000', // #rgb or #rrggbb
+			  speed: 0.8, // Rounds per second
+		  	  trail: 58, // Afterglow percentage
+		  	  shadow: false, // Whether to render a shadow
+			  hwaccel: false, // Whether to use hardware acceleration
+		  	  className: 'spinner', // The CSS class to assign to the spinner
+		 	  zIndex: 2e9, // The z-index (defaults to 2000000000)
+		  	  top: 'auto', // Top position relative to parent in px
+		  	  left: 'auto' // Left position relative to parent in px
+			};
+			target = document.getElementById('map');
+			spinner = new Spinner(opts);
+		}
+
+
+		function initWithSettings(login, password, radius, dbName, serverUrl, lat, lon){
 			console.log("initWithSettings");
 		
 			this.token = "";
@@ -33,17 +63,26 @@
 			this.password = password;
 			this.dbName = dbName;
 			this.radius = radius;
+			this.latitude = lat;
+			this.longitude = lon; 
+			
+			initWidget();
+			
+			updateMapCenter(lat, lon);
 
 			SettingsStorage.SERVER_URL = serverUrl;	
 			
 			refresh();
 		}
 
-		function updateMapCenter(latitude, longitude){
-			console.log("Updating center with "+ latitude + " " + longitude);
+		function updateMapCenter(lat, lon){
+			console.log("Updating center with "+ lat + " " + lon);
+			this.latitude = lat;
+			this.longitude = lon; 
 			
-			mapWidget.changeMapCenter(latitude, longitude);	
+			mapWidget.changeMapCenter(lat, lon);	
 
+			
 		}	
 
 		function refresh(){
@@ -140,32 +179,12 @@
 
 	<script>
 		console.log("Body");
-		var latitude = 60;//LAT_PLACEHOLDER;
-		var longitude = 30;//LON_PLACEHOLDER;
+
 	
-		var mapWidget = new MapWidget(latitude, longitude, "map");
-		mapWidget.showLayerControl = false;
+	//	var mapWidget = new MapWidget(latitude, longitude, "map");
+	//	mapWidget.showLayerControl = false;
 		
-		var opts = {
-		  lines: 17, // The number of lines to draw
-		  length: 34, // The length of each line
-		  width: 8, // The line thickness
-		  radius: 30, // The radius of the inner circle
-		  corners: 1, // Corner roundness (0..1)
-		  rotate: 63, // The rotation offset
-		  direction: 1, // 1: clockwise, -1: counterclockwise
-		  color: '#000', // #rgb or #rrggbb
-		  speed: 0.8, // Rounds per second
-		  trail: 58, // Afterglow percentage
-		  shadow: false, // Whether to render a shadow
-		  hwaccel: false, // Whether to use hardware acceleration
-		  className: 'spinner', // The CSS class to assign to the spinner
-		  zIndex: 2e9, // The z-index (defaults to 2000000000)
-		  top: 'auto', // Top position relative to parent in px
-		  left: 'auto' // Left position relative to parent in px
-		};
-		var target = document.getElementById('map');
-		var spinner = new Spinner(opts);
+		
 		
 		//initWithSettings("Mark", "test", 1000, "tracker_db", "http://194.85.173.9:20005/service");
 		
