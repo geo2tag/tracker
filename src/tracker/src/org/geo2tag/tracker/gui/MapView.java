@@ -1,7 +1,5 @@
 package org.geo2tag.tracker.gui;
 
-
-import org.geo2tag.tracker.TrackerActivity;
 import org.geo2tag.tracker.preferences.Settings;
 import org.geo2tag.tracker.utils.TrackerUtil;
 
@@ -71,7 +69,7 @@ public class MapView extends WebView {
 		
 		String url = String.format("javascript:initWithSettings('%s', '%s', %d, '%s', '%s', %f, %f);", 
 				login, password, radius, dbName, serverUrl, m_latitude, m_longitude);
-		Log.d(TrackerActivity.LOG, url);
+		Log.d(TrackerUtil.LOG, url);
 
 		loadUrl(url);
 	}
@@ -79,7 +77,7 @@ public class MapView extends WebView {
 	public void updateMapWidgetCoordinates(double latitude, double longitude){
 		String url = String.format("javascript:updateMapCenter(%f, %f);", 
 				latitude, longitude);
-		Log.d(TrackerActivity.LOG, url);
+		Log.d(TrackerUtil.LOG, url);
 		loadUrl(url);
 	}
 	

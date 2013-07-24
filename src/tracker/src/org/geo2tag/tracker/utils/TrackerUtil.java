@@ -62,6 +62,8 @@ public class TrackerUtil {
     
 	public static final String DB_NAME = "tracker_db";
 	private static CharSequence m_log = "";
+	
+	public static final String LOG = "Tracker";
     //
     // TODO move to JGeo
     // 

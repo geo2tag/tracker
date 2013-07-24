@@ -59,7 +59,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class TrackerActivity extends Activity {
-	public static String LOG = "Tracker";
 	
 	private TextView mLogView;
 	private TextView mStatusView;
@@ -124,12 +123,12 @@ public class TrackerActivity extends Activity {
 		refreshStatusTextView();
 		mStatusView.setText(mStatusView.getText().toString()+", "+location);
 		
-		Log.v(LOG, mStatusView.getText().toString());
+		Log.v(TrackerUtil.LOG, mStatusView.getText().toString());
 	}
 	
 	
 	private void initialization(){
-		Log.v(LOG, "TrackerActivity - initialization");
+		Log.v(TrackerUtil.LOG, "TrackerActivity - initialization");
 		
 
 		refreshStatusTextView();
@@ -145,10 +144,10 @@ public class TrackerActivity extends Activity {
 		mBtnService.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	if (TrackerUtil.isServiceRunning(TrackerActivity.this, RequestService.class)){
-            		Log.v(LOG, "Tracker is running, stopping");
+            		Log.v(TrackerUtil.LOG, "Tracker is running, stopping");
             		stopTracker();
             	}else{
-            		Log.v(LOG, "Tracker is stopped, running");
+            		Log.v(TrackerUtil.LOG, "Tracker is stopped, running");
             		startTracker();
             	}
             }

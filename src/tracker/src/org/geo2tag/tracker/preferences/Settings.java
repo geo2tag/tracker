@@ -38,11 +38,12 @@ package org.geo2tag.tracker.preferences;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.geo2tag.tracker.TrackerActivity;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import org.geo2tag.tracker.R;
+import org.geo2tag.tracker.utils.TrackerUtil;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -85,7 +86,7 @@ public class Settings {
 			xmlreader.setContentHandler(new ConfigFeedParser(configEditor));
 			xmlreader.parse(is);
 		} catch (Exception e) {
-			Log.v(TrackerActivity.LOG, "loadFromXMLFile - exception: " + e.getMessage());
+			Log.v(TrackerUtil.LOG, "loadFromXMLFile - exception: " + e.getMessage());
 		}
 	}
 

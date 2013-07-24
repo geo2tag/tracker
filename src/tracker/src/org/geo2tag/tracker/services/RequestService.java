@@ -33,7 +33,6 @@ package org.geo2tag.tracker.services;
 
 import java.util.Date;
 
-import org.geo2tag.tracker.TrackerActivity;
 import org.geo2tag.tracker.TrackerActivity.TrackerReceiver;
 import org.geo2tag.tracker.preferences.Settings;
 import org.geo2tag.tracker.preferences.Settings.ITrackerAppSettings;
@@ -63,7 +62,7 @@ public class RequestService extends LocationService {
 
 	@Override
 	public void onStart(Intent intent, int startId) {
-	    Log.v(TrackerActivity.LOG, "RequestService.onStart()");
+	    Log.v(TrackerUtil.LOG, "RequestService.onStart()");
 		super.onStart(intent, startId);
 		mSCache = new SettingsCache(this);
 
@@ -90,7 +89,7 @@ public class RequestService extends LocationService {
 
 	@Override
 	public void onDestroy() {
-	    Log.v(TrackerActivity.LOG, "RequestService.onDestroy()");
+	    Log.v(TrackerUtil.LOG, "RequestService.onDestroy()");
         mTrackerStatus = false;
 	    super.onDestroy();
 	}
@@ -177,7 +176,7 @@ public class RequestService extends LocationService {
 				lat, lon, alt, TrackerUtil.getTime(date), mSCache.serverUrl).doRequest();
 		
 		if (JSONResponse != null){
-            Log.d(TrackerActivity.LOG, JSONResponse.toString());
+            Log.d(TrackerUtil.LOG, JSONResponse.toString());
 		    JsonApplyMarkResponse response = new JsonApplyMarkResponse();
 		    response.parseJson(JSONResponse);
 		    
@@ -233,10 +232,10 @@ public class RequestService extends LocationService {
         if (JSONResponse == null){
             throw new TrackerException(errorMsg);
         }
-        Log.d(TrackerActivity.LOG, JSONResponse.toString());
+        Log.d(TrackerUtil.LOG, JSONResponse.toString());
         response.parseJson(JSONResponse);
         int errno =  response.getErrno();
-        Log.d(TrackerActivity.LOG, "Errno: " + Errno.getErrorByCode(errno));
+        Log.d(TrackerUtil.LOG, "Errno: " + Errno.getErrorByCode(errno));
         for (int err : possibleErrnos) {
             if (err == errno) return;
         }

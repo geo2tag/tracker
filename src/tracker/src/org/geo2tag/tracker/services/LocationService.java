@@ -34,7 +34,6 @@ package org.geo2tag.tracker.services;
 
 import java.util.List;
 
-import org.geo2tag.tracker.TrackerActivity;
 import org.geo2tag.tracker.exception.ExceptionHandler;
 import org.geo2tag.tracker.utils.TrackerUtil;
 
@@ -64,7 +63,7 @@ public class LocationService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-        Log.d(TrackerActivity.LOG, "LocationService.onStart()");
+        Log.d(TrackerUtil.LOG, "LocationService.onStart()");
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);        
@@ -72,7 +71,7 @@ public class LocationService extends Service {
 
     @Override
 	public void onDestroy() {
-        Log.d(TrackerActivity.LOG, "LocationService.onDestroy()");
+        Log.d(TrackerUtil.LOG, "LocationService.onDestroy()");
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.removeUpdates(mLocationListener);
 	}
@@ -90,15 +89,15 @@ public class LocationService extends Service {
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.d(TrackerActivity.LOG, "onStatusChanged: " + provider + ", " + status);
+            Log.d(TrackerUtil.LOG, "onStatusChanged: " + provider + ", " + status);
         }
 
         public void onProviderEnabled(String provider) {
-            Log.d(TrackerActivity.LOG, "onProviderEnabled: " + provider);
+            Log.d(TrackerUtil.LOG, "onProviderEnabled: " + provider);
         }
 
         public void onProviderDisabled(String provider) {
-            Log.d(TrackerActivity.LOG, "onProviderDisabled: " + provider);
+            Log.d(TrackerUtil.LOG, "onProviderDisabled: " + provider);
         }
     };
 

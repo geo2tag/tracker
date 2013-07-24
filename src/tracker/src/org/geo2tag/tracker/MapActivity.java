@@ -4,13 +4,10 @@
 package org.geo2tag.tracker;
 
 import org.geo2tag.tracker.gui.MapView;
-import org.geo2tag.tracker.services.LocationService;
+import org.geo2tag.tracker.utils.TrackerUtil;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -52,7 +49,7 @@ public class MapActivity extends Activity {
 		@Override
 		public void onLocationChanged(Location location) {
 			// TODO Auto-generated method stub
-			Log.d(TrackerActivity.LOG, "MapActivity.onLocationChanged");
+			Log.d(TrackerUtil.LOG, "MapActivity.onLocationChanged");
 			
 			if (!m_mapView.isInited())
 				m_mapView.init(location.getLatitude(), location.getLongitude());
@@ -78,7 +75,7 @@ public class MapActivity extends Activity {
 	
 	
 	private void requestLocation() {
-		Log.d(TrackerActivity.LOG, "MapActivity.requestLocation");
+		Log.d(TrackerUtil.LOG, "MapActivity.requestLocation");
 		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, m_locationListener );
 	}
@@ -117,7 +114,7 @@ public class MapActivity extends Activity {
 		switch (item.getItemId()) {
 		case IDM_REFRESH:
 			m_mapView.refreshMapWidget();
-			Log.d(TrackerActivity.LOG, "Refreshing");
+			Log.d(TrackerUtil.LOG, "Refreshing");
 			break;
 
 		default:
