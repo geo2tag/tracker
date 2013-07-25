@@ -54,6 +54,8 @@ import android.widget.Toast;
 
 public class SettingsActivity extends Activity implements ITrackerNetSettings, ITrackerAppSettings {
 	
+	private static final int DEFAULT_TIME_TICK = 30;
+	private static final int DEFAULT_MAP_RADIUS = 10;
 	private final String[] TRACKING_PERIOD_ARGS = {"1", "2", "3", "4", "5", "10", "20", "30", "40", "50", "60"};
 	private final String[] MAP_RADIUS_ARGS = {"1", "5", "10", "20", "50", "100"};
 	
@@ -101,14 +103,14 @@ public class SettingsActivity extends Activity implements ITrackerNetSettings, I
 	
 	private void initializePickButtons(){
 		
-		initializePickButton(TIME_TICK, R.string.tick_interval_name, R.id.button_settings_tick, TRACKING_PERIOD_ARGS );
-		initializePickButton(RADIUS, R.string.map_radius_name, R.id.button_settings_radius, MAP_RADIUS_ARGS );
+		initializePickButton(TIME_TICK, R.string.tick_interval_name, R.id.button_settings_tick, TRACKING_PERIOD_ARGS, DEFAULT_TIME_TICK );
+		initializePickButton(RADIUS, R.string.map_radius_name, R.id.button_settings_radius, MAP_RADIUS_ARGS, DEFAULT_MAP_RADIUS );
 	}
 	
 	private void initializePickButton(String prefKey, int dialogTitleId, 
-			int buttonId, final String[] args){
+			int buttonId, final String[] args, int defaultValue){
 		
-		final int value = new Settings(this).getPreferences().getInt(/*TIME_TICK*/prefKey, 0);
+		final int value = new Settings(this).getPreferences().getInt(/*TIME_TICK*/prefKey, defaultValue);
 
 		final String dialogTitle = getResources().getText(dialogTitleId).toString();
 		
