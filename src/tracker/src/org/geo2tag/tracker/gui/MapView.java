@@ -12,9 +12,11 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 public class MapView extends WebView {
 
+	private int m_mapWidgetInitCounter = 0;
 	
 	private static final String MAP_FILE = "file:///android_asset/map_tracker.html"; 
 	private static final String REFRESH_URL = "javascript:refresh();"; 
@@ -38,24 +40,36 @@ public class MapView extends WebView {
 		setWebViewClient(new WebViewClient() {
 		    public void onPageFinished(WebView view, String url) {
 		    	if (url.equals(MAP_FILE))
-		    		initMapWidget();
+		    		
+		    		tryToInitMapWidget();
 		    }
 		});
+		Toast.makeText(getContext(),"Determining current location", Toast.LENGTH_LONG).show();
 		
+		loadUrl(MAP_FILE);
 		//init();
 	}
+	
+	public synchronized void tryToInitMapWidget(){
+		if (m_mapWidgetInitCounter == 1)
+			initMapWidget();
+		else
+			m_mapWidgetInitCounter++;
+	}
+	
+	
 	
 	public boolean isInited(){
 		return m_inited;
 	}
 	
 	
-	public void init(double latitude, double longitude){
+	public void setMapCenter(double latitude, double longitude){
 		m_inited = true;
 		m_latitude = latitude;
 		m_longitude = longitude;
 		
-		loadUrl(MAP_FILE);
+		
 	}
 
 	private void initMapWidget(){

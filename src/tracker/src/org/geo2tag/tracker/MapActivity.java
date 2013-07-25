@@ -51,8 +51,10 @@ public class MapActivity extends Activity {
 			// TODO Auto-generated method stub
 			Log.d(TrackerUtil.LOG, "MapActivity.onLocationChanged");
 			
-			if (!m_mapView.isInited())
-				m_mapView.init(location.getLatitude(), location.getLongitude());
+			if (!m_mapView.isInited()){
+				m_mapView.setMapCenter(location.getLatitude(), location.getLongitude());
+				m_mapView.tryToInitMapWidget();
+			}
 			
 			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 			locationManager.removeUpdates(m_locationListener);
