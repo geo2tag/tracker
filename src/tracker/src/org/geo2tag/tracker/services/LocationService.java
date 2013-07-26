@@ -53,7 +53,7 @@ public class LocationService extends Service {
 	public static final String TYPE_LOCATION_TEXT = "type.location_text";
 	public static final String TYPE_LOCATION_OBJ = "type.loaction_obj";
 	
-    private boolean isDeviceReady = false;
+    private static boolean isDeviceReady = false;
     
     @Override
     public void onCreate() {
@@ -63,7 +63,11 @@ public class LocationService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-        Log.d(TrackerUtil.LOG, "LocationService.onStart()");
+             
+        isDeviceReady = false;
+        
+        Log.d(TrackerUtil.LOG, "LocationService.onStart() "+isDeviceReady());
+        
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, mLocationListener);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, mLocationListener);        
@@ -101,17 +105,17 @@ public class LocationService extends Service {
         }
     };
 
-	public boolean isDeviceReady(){
+	public static boolean isDeviceReady(){
 		return isDeviceReady;
 	}
 
-    protected Location getLocation() {
+    public static Location getLocation(Context context) {
         Location bestResult = null;
         long minTime = 30 * 1000;   // 1 sec
         float bestAccuracy = Float.MAX_VALUE;
         long bestTime = Long.MIN_VALUE;
 
-        LocationManager  locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager  locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         List<String> matchingProviders = locationManager.getAllProviders();
         for (String provider : matchingProviders) {
             Location location = locationManager.getLastKnownLocation(provider);
@@ -135,7 +139,7 @@ public class LocationService extends Service {
         return bestResult;
     }	
     
-    private void sendLocation(Location location) {
+    private  void sendLocation(Location location) {
         Intent intent = new Intent(ACTION_LOCATION);
         intent.putExtra(TYPE_LOCATION_TEXT, 
         		TrackerUtil.convertLocation(location.getLatitude(), location.getLongitude()));

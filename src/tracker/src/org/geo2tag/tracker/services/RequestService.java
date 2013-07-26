@@ -164,7 +164,7 @@ public class RequestService extends LocationService {
 			return -1;
 		}
 
-		final Location location = getLocation();
+		final Location location = getLocation(this);
 		final double lat = location.getLatitude();
 		final double lon = location.getLongitude();
 		final double alt = 0.0;

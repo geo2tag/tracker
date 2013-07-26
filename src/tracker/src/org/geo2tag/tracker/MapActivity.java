@@ -4,6 +4,7 @@
 package org.geo2tag.tracker;
 
 import org.geo2tag.tracker.gui.MapView;
+import org.geo2tag.tracker.services.LocationService;
 import org.geo2tag.tracker.utils.TrackerUtil;
 
 import android.app.Activity;
@@ -50,14 +51,15 @@ public class MapActivity extends Activity {
 		public void onLocationChanged(Location location) {
 			// TODO Auto-generated method stub
 			Log.d(TrackerUtil.LOG, "MapActivity.onLocationChanged");
-			
-			if (!m_mapView.isInited()){
-				m_mapView.setMapCenter(location.getLatitude(), location.getLongitude());
-				m_mapView.tryToInitMapWidget();
+			synchronized(this){
+				if (!m_mapView.isInited() && location != null){
+					initMapWidget(location);
+
+					LocationManager locationManager = 
+							(LocationManager) getSystemService(Context.LOCATION_SERVICE);
+					locationManager.removeUpdates(m_locationListener);
+				}
 			}
-			
-			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			locationManager.removeUpdates(m_locationListener);
 		}
 	};
 
@@ -73,13 +75,23 @@ public class MapActivity extends Activity {
 		requestLocation();
 	}
 	
-	
+	private void initMapWidget(Location location){
+		m_mapView.setMapCenter(location.getLatitude(), location.getLongitude());
+		m_mapView.tryToInitMapWidget();
+	}
 	
 	
 	private void requestLocation() {
 		Log.d(TrackerUtil.LOG, "MapActivity.requestLocation");
-		LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, m_locationListener );
+
+		if (LocationService.isDeviceReady()){
+			Location location = LocationService.getLocation(this);
+			initMapWidget(location);
+		}else{
+			LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, m_locationListener );
+			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, m_locationListener );
+		}
 	}
 
 

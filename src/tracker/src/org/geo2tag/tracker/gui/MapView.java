@@ -1,5 +1,7 @@
 package org.geo2tag.tracker.gui;
 
+import java.util.Locale;
+
 import org.geo2tag.tracker.preferences.Settings;
 import org.geo2tag.tracker.utils.TrackerUtil;
 
@@ -81,7 +83,7 @@ public class MapView extends WebView {
 		String dbName =  TrackerUtil.DB_NAME;
 		int radius =  preferencies.getInt(Settings.ITrackerNetSettings.RADIUS, 0);
 		
-		String url = String.format("javascript:initWithSettings('%s', '%s', %d, '%s', '%s', %f, %f);", 
+		String url = String.format(Locale.US,"javascript:initWithSettings('%s', '%s', %d, '%s', '%s', %.10f, %.10f);", 
 				login, password, radius, dbName, serverUrl, m_latitude, m_longitude);
 		Log.d(TrackerUtil.LOG, url);
 
