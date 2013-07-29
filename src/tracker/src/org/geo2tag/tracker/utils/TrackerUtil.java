@@ -67,12 +67,12 @@ public class TrackerUtil {
     //
     // TODO move to JGeo
     // 
-	private static DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy HH:MM:ss.SSS");
+	private static DateFormat dateFormat = new SimpleDateFormat("dd MM yyyy HH:mm:ss.SSS");
 	public static String getTime(Date date){
 		return dateFormat.format(date);
 	}
 	
-	private static DateFormat dateFormatForLog = new SimpleDateFormat("HH:MM:ss");
+	private static DateFormat dateFormatForLog = new SimpleDateFormat("HH:mm:ss");
 	public static String getTimeForLog(Date date){
 		return dateFormatForLog.format(date);
 	}
