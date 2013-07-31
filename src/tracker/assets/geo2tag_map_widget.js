@@ -181,10 +181,37 @@ MapWidget.prototype.addFilterResultsToMap = function (channels){
 	this.addLayerControl(tagMarkers);
 };
 
+MapWidget.prototype.findLastMarker = function (){
+	var lastMarker = null;
+	if (this.markers.length != 0 ){
+		console.log("mapWidget.markers.length != 0 ");
+		
+		var lastDate = dateToInt(this.markers[0].pubDate);
+		var iLast = 0;
+		for (var i=1; i<this.markers.length; i++){
+			var currentDate = dateToInt(this.markers[i].pubDate);
+			console.log(this.markers[iLast].pubDate+"|"+this.markers[i].pubDate);
+			if (currentDate > lastDate){
+				lastDate = currentDate;
+				iLast = i;
+				console.log("New last element found" + i);
+			}	
+		}
+		console.log("Last date = " + this.markers[iLast].pubDate);
+		var lastMarker = this.markers[iLast];
+	}
+	
+	return lastMarker;
+}
+
 
 MapWidget.prototype.onFilterSuccess = function (jsonResponse){
 
 	this.addFilterResultsToMap(jsonResponse.channels);
+	var lastMarker = this.findLastMarker();
+	if (lastMarker != null ){
+		lastMarker.openPopup();
+	}
 	this.raiseEvent("onFilterSuccess");
 }	
 		

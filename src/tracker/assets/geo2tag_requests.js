@@ -559,3 +559,15 @@ function addLeadingZeros(str, zerosCount){
 
 	return (zerosString + str).slice(-zerosCount);
 }
+
+/*
+ * @param {string} date - date in format "date month year hour:minutes:seconds.milliseconds" 
+ * @return {integer} - representation of a date
+ */
+function dateToInt(date){
+	var arr = date.split(/[ .:]/);
+	
+	var result = arr[2]+arr[1]+arr[0]+arr[3]+arr[4]+arr[5]+arr[6];
+	
+	return result;
+}

@@ -86,37 +86,13 @@
 			spinner.spin(target);
 		}
 		
-		/*
-		 * @param {string} date - date in format "date month year hour:minutes:seconds.milliseconds" 
-		 * @return {integer} - representation of a date
-		 */
-		function dateToInt(date){
-			var arr = date.split(/[ .:]/);
-			
-			var result = arr[2]+arr[1]+arr[0]+arr[3]+arr[4]+arr[5]+arr[6];
-			
-			return result;
-		}
 		
 		function onDataLoaded(){
 			console.log("onDataLoaded()");
 			console.log(mapWidget.markers.length);
-			if (mapWidget.markers.length != 0 ){
-				console.log("mapWidget.markers.length != 0 ");
-				
-				var lastDate = dateToInt(mapWidget.markers[0].pubDate);
-				var iLast = 0;
-				for (var i=1; i<mapWidget.markers.length; i++){
-					var currentDate = dateToInt(mapWidget.markers[i].pubDate);
-					console.log(mapWidget.markers[iLast].pubDate+"|"+mapWidget.markers[i].pubDate);
-					if (currentDate > lastDate){
-						lastDate = currentDate;
-						iLast = i;
-						console.log("New last element found" + i);
-					}	
-				}
-				console.log("Last date = " + mapWidget.markers[iLast].pubDate);
-				var lastMarker = mapWidget.markers[iLast];
+
+			var lastMarker = mapWidget.findLastMarker();
+			if (lastMarker != null){
 				var latLng = lastMarker.getLatLng();
 				console.log("Last tag coordinates, lat="+latLng.lat+", lon="+latLng.lng);
 				updateMapCenter(latLng.lat, latLng.lng);
