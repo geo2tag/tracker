@@ -81,18 +81,20 @@ public class TrackerUtil {
 	
 	public static void notify(Context c, boolean isTrackerRunning){		
 		NotificationManager nm = (NotificationManager)c.getSystemService(Context.NOTIFICATION_SERVICE);
-		String title = "Geo2Tag Traker service";
+		String title = c.getResources().getString(R.string.service_name);
 		String expandedText;
 		
 		int icon; 
 		
 		if (isTrackerRunning){
 			icon = R.drawable.icon;
-		 	expandedText = "Geo2Tag Traker service is running";
+		 	expandedText = c.getResources().getString(R.string.service_running);
+		 	//"CarFleet service is running";
 		}
 		else {
 			icon = R.drawable.icon_bw;
-			expandedText = "Geo2Tag Traker service stopped";
+			expandedText = c.getResources().getString(R.string.service_stopped);
+					//"CarFleet service stopped";
 		}
 		
 		Notification notification = new Notification(icon, title, System.currentTimeMillis());

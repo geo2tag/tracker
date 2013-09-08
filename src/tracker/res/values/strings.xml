@@ -87,5 +87,9 @@
 	<string name="msg_srv_channel_prepared">Channel prepared...</string>
 	<string name="msg_srv_login_failed">Login is failed...</string>
 	<string name="msg_srv_login_successful">Login successful</string>
-	
+
+<!--  service -->	
+	<string name="service_name">Geo2Tag Tracker service</string>
+	<string name="service_running">Geo2Tag Tracker service is running</string>
+	<string name="service_stopped">Geo2Tag Tracker service stopped</string>	
 </resources>
