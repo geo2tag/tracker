@@ -41,17 +41,7 @@
 			    android:layout_height="wrap_content" 
 			    android:text="@string/btnStart"
 			/>    
-
-			<Button android:id="@+id/settings_button"
-			    android:layout_width="fill_parent" 
-			    android:layout_height="wrap_content" 
-			    android:text="@string/btnSettings"
-			/>   
-			<Button android:id="@+id/screeen_down_button"
-			    android:layout_width="fill_parent" 
-			    android:layout_height="wrap_content" 
-			    android:text="@string/btnHide"
-			/>   
+ 
 			<Button android:id="@+id/map_button"
 			    android:layout_width="fill_parent" 
 			    android:layout_height="wrap_content" 

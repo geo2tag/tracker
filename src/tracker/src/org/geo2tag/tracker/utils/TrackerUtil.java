@@ -61,6 +61,7 @@ import android.net.NetworkInfo;
 public class TrackerUtil {
     
 	public static final String DB_NAME = "tracker_db";
+	public static final String REGISTER_URL = "http://194.85.173.9:20005/register.php?db_name="+DB_NAME;
 	private static CharSequence m_log = "";
 	
 	public static final String LOG = "Tracker";

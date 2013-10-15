@@ -92,4 +92,11 @@
 	<string name="service_name">Geo2Tag Tracker service</string>
 	<string name="service_running">Geo2Tag Tracker service is running</string>
 	<string name="service_stopped">Geo2Tag Tracker service stopped</string>	
+	
+<!-- Menu -->
+     
+     <string name="menu_settings">Settings</string>
+     <string name="menu_hide">Hide app</string>
+     <string name="menu_registration">Registration</string>
+          
 </resources>

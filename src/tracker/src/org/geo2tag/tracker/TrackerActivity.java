@@ -50,9 +50,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -152,23 +156,6 @@ public class TrackerActivity extends Activity {
             	}
             }
         });
-
-		
-		final Button settingsBtn = (Button) findViewById(R.id.settings_button);
-		settingsBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(TrackerActivity.this, SettingsActivity.class));
-			}
-		});
-
-		final Button screenBtn = (Button) findViewById(R.id.screeen_down_button);
-		screenBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				TrackerUtil.hideApplication(TrackerActivity.this); 
-			}
-		});
 		
 		final Button mapBtn = (Button) findViewById(R.id.map_button);
 		mapBtn.setOnClickListener(new View.OnClickListener() {
@@ -310,4 +297,45 @@ public class TrackerActivity extends Activity {
 		}		
 				
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.main_activity_menu, menu);
+	    return true;
+	}
+	
+	private void hide(){
+		TrackerUtil.hideApplication(TrackerActivity.this); 
+	}
+	
+	private void openRegistrationPage() {
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(TrackerUtil.REGISTER_URL));
+		startActivity(browserIntent);
+	}
+
+	private void openSettingsActivity() {
+		startActivity(new Intent(TrackerActivity.this, SettingsActivity.class));
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_hide:
+			hide();
+			return true;
+		case R.id.menu_settings:
+			openSettingsActivity();
+			return true;
+		case R.id.menu_registration:
+			openRegistrationPage();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 }
