@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_hide"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/arrow_down_float"
+        android:title="@string/menu_hide"
+        />
+    
+    <item
+        android:id="@+id/menu_settings"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="@string/menu_settings"
+        />
+    
+    
+    <item
+        android:id="@+id/menu_registration"
+        android:orderInCategory="100"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/menu_registration"
+        />
+
+</menu>
