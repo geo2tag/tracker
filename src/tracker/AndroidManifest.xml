@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 
 /*
- * Copyright 2010-2012  Vasily Romanikhin  bac1ca89@gmail.com
+ * Copyright 2010-2014  OSLL, Geo2Tag  geo2tag.org@gmail.com
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -34,7 +34,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.geo2tag.tracker"
-      android:versionCode="9"
+      android:versionCode="10"
       android:versionName="1.8.0">
 	  
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
